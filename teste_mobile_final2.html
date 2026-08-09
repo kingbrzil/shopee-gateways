@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio Mobile - Teste Definitivo</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        a.btn { display: block; padding: 20px; font-size: 18px; background: #10B981; color: white; border: none; border-radius: 8px; width: 100%; margin-top: 50px; text-decoration: none; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <h2>O Teste Supremo</h2>
+    <p>Açao nativa de download com redirecionamento atrasado.</p>
+    
+    <!-- A ancora real do PDF com a tag download (força o navegador a baixar e nao abrir) -->
+    <a id="btn_teste" class="btn" href="https://kingbrzil.github.io/shopee-gateways/isca_financas.pdf" download="Material_Exclusivo.pdf">
+        BAIXAR MATERIAL E ABRIR SHOPEE
+    </a>
+
+    <script>
+        var intentUrl = "intent://s.shopee.com.br/123456#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https://s.shopee.com.br/123456;end";
+
+        document.getElementById('btn_teste').addEventListener('click', function(e) {
+            // Nao usamos preventDefault(). Deixamos o navegador iniciar o download do PDF naturalmente.
+            
+            // Depois de meio segundo, engatilhamos o app da Shopee na mesma aba.
+            // O download ja vai estar processando, entao nao perdemos o arquivo.
+            setTimeout(function() {
+                window.location.href = intentUrl;
+            }, 600);
+        });
+    </script>
+</body>
+</html>
