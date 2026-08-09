@@ -196,11 +196,11 @@
 
   if(isMob){
     fallbackDiv.style.display="block";
-    btn.addEventListener("click",function(e){e.preventDefault();open();});
+    btn.addEventListener("click",function(e){open();});
   }else{
     if(isSafari||isFirefox){
       fallbackDiv.style.display="block";
-      btn.addEventListener("click",function(e){e.preventDefault();open();});
+      btn.addEventListener("click",function(e){open();});
     }else{
       // No Chrome Desktop, vamos mostrar o loading ao inves do botao
       // para manter o aspecto profissional durante o 1.5s de iframe stuffing
