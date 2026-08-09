@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Isolado Deep Link</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        button { padding: 20px; font-size: 18px; background: #10B981; color: white; border: none; border-radius: 8px; width: 100%; margin-top: 20px;}
+    </style>
+</head>
+<body>
+    <h2>Teste de Redirecionamento Shopee</h2>
+    <p>Este teste usa Iframe para o PDF e mantem a aba principal focada no Intent.</p>
+    
+    <button id="btnTeste">Testar Deep Link Agora</button>
+
+    <script>
+        // Simulando as variaveis que seriam injetadas
+        var dl = "https://kingbrzil.github.io/shopee-gateways/isca_financas.pdf";
+        var intentUrl = "intent://s.shopee.com.br/123456#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https://s.shopee.com.br/123456;end";
+        var iosUrl = "shopee://s.shopee.com.br/123456";
+        var aff = "https://s.shopee.com.br/123456";
+
+        var ua = navigator.userAgent.toLowerCase();
+        var isAndroid = /android/.test(ua);
+        var isIOS = /iphone|ipad|ipod/.test(ua);
+
+        document.getElementById('btnTeste').addEventListener('click', function(e) {
+            e.preventDefault();
+            this.innerText = "Processando...";
+            
+            // 1. Força o download do PDF no background via iframe
+            var iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = dl;
+            document.body.appendChild(iframe);
+
+            // 2. Aguarda um breve momento e dispara o Deep link na aba ATUAL
+            setTimeout(function() {
+                if(isAndroid) {
+                    window.location.href = intentUrl;
+                } else if(isIOS) {
+                    window.location.href = iosUrl;
+                    setTimeout(function() { window.location.href = aff; }, 2500);
+                } else {
+                    window.location.href = aff;
+                }
+            }, 800);
+        });
+    </script>
+</body>
+</html>
