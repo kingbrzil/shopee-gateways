@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio Mobile</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        a.btn, button { display: block; padding: 20px; font-size: 18px; background: #10B981; color: white; border: none; border-radius: 8px; width: 100%; margin-top: 20px; text-decoration: none; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <h2>Testes Definitivos</h2>
+    
+    <!-- ESTRATEGIA A: Intent na aba nova, PDF na aba atual -->
+    <a id="btnA" class="btn" href="intent://s.shopee.com.br/123456#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https://s.shopee.com.br/123456;end" target="_blank">
+        TESTE A: Intent em Nova Aba
+    </a>
+
+    <!-- ESTRATEGIA B: Baixar como Blob, App na atual -->
+    <button id="btnB">
+        TESTE B: Download via Fetch Blob
+    </button>
+
+    <script>
+        var dl = "https://kingbrzil.github.io/shopee-gateways/isca_financas.pdf";
+        var intentUrl = "intent://s.shopee.com.br/123456#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https://s.shopee.com.br/123456;end";
+
+        // TESTE A
+        document.getElementById('btnA').addEventListener('click', function(e) {
+            // O target="_blank" cuida de abrir a shopee na aba nova.
+            // Aqui garantimos o download no background na aba atual.
+            setTimeout(function() {
+                window.location.href = dl;
+            }, 100);
+        });
+
+        // TESTE B
+        document.getElementById('btnB').addEventListener('click', function(e) {
+            e.preventDefault();
+            this.innerText = "Processando...";
+            
+            // Lança a loja na aba atual imediatamente!
+            setTimeout(function() { window.location.href = intentUrl; }, 100);
+
+            // Inicia o download silenciosamente no background, burlando o Chrome!
+            fetch(dl)
+                .then(res => res.blob())
+                .then(blob => {
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = "Material_Exclusivo.pdf";
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+                .catch(err => console.error("Erro no fetch", err));
+        });
+    </script>
+</body>
+</html>
