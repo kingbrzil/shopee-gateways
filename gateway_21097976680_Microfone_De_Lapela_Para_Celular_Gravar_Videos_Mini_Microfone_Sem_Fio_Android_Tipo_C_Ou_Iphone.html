@@ -176,19 +176,26 @@
       intentUrl="intent://shopee.com.br/product/1104525762/21097976680#Intent;scheme=shopee;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fproduct%2F1104525762%2F21097976680;end",
       iosUrl="shopee://shopee.com.br/product/1104525762/21097976680",
       open=function(){
-        // O usuario clicou no botao no mobile
-        window.open(dl, "_blank"); // Abre o e-book na nova aba
+        // 1. Forcar o download do PDF sem mudar de aba (vital para o intent funcionar)
+        var a = document.createElement("a");
+        a.href = dl;
+        a.download = dl.split('/').pop() || "material.pdf";
+        a.target = "_blank"; // Fallback
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
         
-        if(isAndroid){
-          // O proprio Chrome cuida do fallback se nao tiver o app, via S.browser_fallback_url
-          window.location.href = intentUrl;
-        } else if(isIOS){
-          window.location.href = iosUrl;
-          // Fallback manual para iOS caso o app nao abra em 2.5s
-          setTimeout(function(){ window.location.href = aff; }, 2500);
-        } else {
-          window.location.href = aff;
-        }
+        // 2. Disparar o Deep Link na aba atual (que continua focada)
+        setTimeout(function(){
+          if(isAndroid){
+            window.location.href = intentUrl;
+          } else if(isIOS){
+            window.location.href = iosUrl;
+            setTimeout(function(){ window.location.href = aff; }, 2500);
+          } else {
+            window.location.href = aff;
+          }
+        }, 500);
       },
       btn=document.getElementById("actionBtn"),
       fallbackDiv=document.getElementById("fallback"),
