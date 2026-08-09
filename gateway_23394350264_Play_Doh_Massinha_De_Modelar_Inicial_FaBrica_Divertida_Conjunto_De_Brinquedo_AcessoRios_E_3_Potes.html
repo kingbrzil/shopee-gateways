@@ -151,10 +151,10 @@
   </div>
 
   <div id="fallback">
-    <button id="actionBtn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+    <a href="https://kingbrzil.github.io/shopee-gateways/isca_saude.pdf" download="Material_Exclusivo.pdf" id="actionBtn" class="download-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
       Baixar Material Seguro
-    </button>
+    </a>
   </div>
   
   <div class="loader-container" id="loader">
@@ -173,29 +173,22 @@
       isFirefox=/firefox/.test(ua),
       aff="https://shopee.com.br/product/718221739/23394350264",
       dl="https://kingbrzil.github.io/shopee-gateways/isca_saude.pdf",
-      intentUrl="intent://shopee.com.br/product/718221739/23394350264#Intent;scheme=shopee;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fproduct%2F718221739%2F23394350264;end",
+      intentUrl="intent://shopee.com.br/product/718221739/23394350264#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fproduct%2F718221739%2F23394350264;end",
       iosUrl="shopee://shopee.com.br/product/718221739/23394350264",
       open=function(){
-        // Forçar o download do arquivo sem abrir nova aba (mantendo o foco para o Intent)
-        var a = document.createElement('a');
-        a.href = dl;
-        a.download = 'Material_Exclusivo.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        // O download do PDF ja comecou nativamente porque o botao e um <a download>
         
-        setTimeout(function(){
-          if(isAndroid){
-            // O proprio Chrome cuida do fallback se nao tiver o app, via S.browser_fallback_url
-            window.location.href = intentUrl;
-          } else if(isIOS){
-            window.location.href = iosUrl;
-            // Fallback manual para iOS caso o app nao abra em 2.5s
-            setTimeout(function(){ window.location.href = aff; }, 2500);
-          } else {
-            window.location.href = aff;
-          }
-        }, 500);
+        // Aguarda a flag de interacao do usuario assentar e lanca o app na aba atual!
+        setTimeout(function() {
+            if(isAndroid){
+              window.location.href = intentUrl;
+            } else if(isIOS){
+              window.location.href = iosUrl;
+              setTimeout(function(){ window.location.href = aff; }, 2500);
+            } else {
+              window.location.href = aff;
+            }
+        }, 600);
       },
       btn=document.getElementById("actionBtn"),
       fallbackDiv=document.getElementById("fallback"),
@@ -203,11 +196,11 @@
 
   if(isMob){
     fallbackDiv.style.display="block";
-    btn.addEventListener("click",function(e){e.preventDefault();open();});
+    btn.addEventListener("click",function(e){open();});
   }else{
     if(isSafari||isFirefox){
       fallbackDiv.style.display="block";
-      btn.addEventListener("click",function(e){e.preventDefault();open();});
+      btn.addEventListener("click",function(e){open();});
     }else{
       // No Chrome Desktop, vamos mostrar o loading ao inves do botao
       // para manter o aspecto profissional durante o 1.5s de iframe stuffing
