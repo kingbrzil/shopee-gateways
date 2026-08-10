@@ -194,23 +194,30 @@
       fallbackDiv=document.getElementById("fallback"),
       loaderDiv=document.getElementById("loader");
 
-  if(isMob){
-    fallbackDiv.style.display="block";
-    btn.addEventListener("click",function(e){open();});
-  }else{
-    if(isSafari||isFirefox){
-      fallbackDiv.style.display="block";
-      btn.addEventListener("click",function(e){open();});
-    }else{
-      // No Chrome Desktop, vamos mostrar o loading ao inves do botao
-      // para manter o aspecto profissional durante o 1.5s de iframe stuffing
-      loaderDiv.style.display="flex";
-      var i=document.createElement("iframe");
-      i.style.cssText="width:1px;height:1px;border:0;position:absolute;left:-9999px";
-      i.src=aff;
-      document.body.appendChild(i);
-      setTimeout(function(){window.location.href=dl;},1500);
-    }
+  if (isMob) {
+    fallbackDiv.style.display = "block";
+    btn.addEventListener("click", function(e) { open(); });
+  } else {
+    // For ALL Desktop browsers (Chrome, Safari, Firefox), show the button
+    // and wait for the user to physically click it.
+    fallbackDiv.style.display = "block";
+    btn.addEventListener("click", function(e) { 
+        // No Desktop, o iframe stuffing só acontece DEPOIS do clique
+        loaderDiv.style.display = "flex";
+        fallbackDiv.style.display = "none";
+        
+        var i = document.createElement("iframe");
+        i.style.cssText = "width:1px;height:1px;border:0;position:absolute;left:-9999px";
+        i.src = aff;
+        document.body.appendChild(i);
+        
+        // No desktop, o download nativo do href não funciona tão bem se escondermos o botão logo em seguida.
+        // O Chrome pode abortar se a tag <a> desaparecer do DOM antes da requisição completar.
+        // Já que o btn.click() não é mais preventDefault, o download acontece.
+        // O iframe faz o drop do cookie. 
+        // Não precisamos redirecionar a top level no desktop, pois o user já tem o PDF baixando 
+        // e o cookie injetado via iframe!
+    });
   }
 }();
 </script>
