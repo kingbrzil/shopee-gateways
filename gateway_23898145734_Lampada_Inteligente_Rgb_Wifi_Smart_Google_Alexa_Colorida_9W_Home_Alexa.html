@@ -198,24 +198,17 @@
     fallbackDiv.style.display = "block";
     btn.addEventListener("click", function(e) { open(); });
   } else {
-    // Desktop: mostra o botão e espera o clique físico
     fallbackDiv.style.display = "block";
     btn.addEventListener("click", function(e) {
-        // Mostra loading enquanto processa
         loaderDiv.style.display = "flex";
         fallbackDiv.style.display = "none";
 
-        // Injeta iframe invisível para dropar o cookie de afiliado
-        var i = document.createElement("iframe");
-        i.style.cssText = "width:1px;height:1px;border:0;position:absolute;left:-9999px";
-        i.src = aff;
-        document.body.appendChild(i);
-
-        // Após 1.5s (tempo para o PDF começar a baixar e o cookie cair),
-        // redireciona a aba para o produto na Shopee
+        // O download é iniciado nativamente pelo <a download>.
+        // Aguardamos 800ms para garantir que o browser registre a requisição do download
+        // antes de redirecionar a aba atual para a Shopee.
         setTimeout(function() {
             window.location.href = aff;
-        }, 1500);
+        }, 800);
     });
   }
 }();
