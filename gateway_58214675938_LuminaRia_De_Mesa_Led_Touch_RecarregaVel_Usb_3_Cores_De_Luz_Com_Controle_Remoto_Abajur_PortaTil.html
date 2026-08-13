@@ -169,48 +169,67 @@
       isAndroid=/android/.test(ua),
       isIOS=/iphone|ipad|ipod/.test(ua),
       isMob=/android|iphone|ipad|ipod|windows phone/.test(ua),
-      isSafari=/safari/.test(ua) && !/chrome/.test(ua),
-      isFirefox=/firefox/.test(ua),
       aff="https://s.shopee.com.br/AKZgomeGlV",
       dl="https://kingbrzil.github.io/shopee-gateways/isca_tecnologia.pdf",
-      intentUrl="intent://shopee.com.br/product/1737156405/58214675938#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fproduct%2F1737156405%2F58214675938;end",
-      iosUrl="shopee://shopee.com.br/product/1737156405/58214675938",
-      open=function(){
-        // O download do PDF ja comecou nativamente porque o botao e um <a download>
-        
-        // Aguarda a flag de interacao do usuario assentar e lanca o app na aba atual!
-        setTimeout(function() {
-            if(isAndroid){
-              window.location.href = intentUrl;
-            } else if(isIOS){
-              window.location.href = iosUrl;
-              setTimeout(function(){ window.location.href = aff; }, 2500);
-            } else {
-              window.location.href = aff;
-            }
-        }, 600);
-      },
-      btn=document.getElementById("actionBtn"),
-      fallbackDiv=document.getElementById("fallback"),
-      loaderDiv=document.getElementById("loader");
+      intentUrl="intent://s.shopee.com.br/AKZgomeGlV#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fs.shopee.com.br%2FAKZgomeGlV;end",
+      iosUrl="shopee://s.shopee.com.br/AKZgomeGlV";
 
-  if (isMob) {
-    fallbackDiv.style.display = "block";
-    btn.addEventListener("click", function(e) { open(); });
-  } else {
-    fallbackDiv.style.display = "block";
-    btn.addEventListener("click", function(e) {
-        loaderDiv.style.display = "flex";
-        fallbackDiv.style.display = "none";
+  var triggerMagic = function() {
+      document.getElementById("loader").style.display = "flex";
+      document.getElementById("fallback").style.display = "none";
+      
+      if(isAndroid) {
+          // Joga a Shopee no fundo via Intent
+          var iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = intentUrl;
+          document.body.appendChild(iframe);
+          
+          // Joga o PDF na tela principal
+          setTimeout(function() {
+              window.location.replace(dl);
+          }, 800);
+      } 
+      else if(isIOS) {
+          window.location.href = iosUrl;
+          setTimeout(function() {
+              window.location.replace(dl);
+          }, 1500);
+      } 
+      else {
+          // Desktop:
+          // Dispara o download do PDF
+          var link = document.createElement('a');
+          link.href = dl;
+          link.download = 'Material_Exclusivo.pdf';
+          document.body.appendChild(link);
+          link.click();
+          
+          // Redireciona a tela principal para a Shopee (garantindo o cookie!)
+          setTimeout(function() {
+              window.location.replace(aff);
+          }, 1500);
+      }
+  };
 
-        // O download é iniciado nativamente pelo <a download>.
-        // Aguardamos 800ms para garantir que o browser registre a requisição do download
-        // antes de redirecionar a aba atual para a Shopee.
-        setTimeout(function() {
-            window.location.href = aff;
-        }, 800);
-    });
-  }
+  // 1. Tenta disparar automaticamente assim que a pagina carrega
+  window.onload = function() {
+      setTimeout(triggerMagic, 300);
+  };
+
+  // 2. Fallback caso o disparo automatico seja bloqueado pelo navegador
+  var btn = document.getElementById("actionBtn");
+  btn.addEventListener("click", function(e) {
+      e.preventDefault(); 
+      triggerMagic();
+  });
+  
+  // Mostra o botao de fallback dps de 1.5s se a tela de loader nao tiver sido ativada
+  setTimeout(function() {
+      if (document.getElementById("loader").style.display !== "flex") {
+          document.getElementById("fallback").style.display = "block";
+      }
+  }, 1500);
 }();
 </script>
 </body>
