@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dossiê Confidencial: A Verdade sobre a Agenda 2030 | Download Seguro</title>
     <style>
-        /* =========================================================
-           ESTRUTURA VISUAL E CSS (CAMADA 2: DARK MODE / ALTA CONVERSÃO)
-           ========================================================= */
         :root {
             --bg-dark: #0a0e17;
             --card-bg: #141b2d;
@@ -45,7 +42,6 @@
             overflow: hidden;
         }
 
-        /* Badge de Urgência */
         .urgency-badge {
             display: inline-flex;
             align-items: center;
@@ -70,7 +66,6 @@
             box-shadow: 0 0 8px #fbbf24;
         }
 
-        /* CAPA RESPONSIVA NATIVA (capa.jpg) */
         .cover-container {
             width: 100%;
             max-width: 280px;
@@ -114,7 +109,6 @@
             margin-bottom: 20px;
         }
 
-        /* Caixa de Metadados do Arquivo */
         .file-info {
             display: flex;
             justify-content: space-around;
@@ -133,7 +127,6 @@
             font-size: 0.95rem;
         }
 
-        /* Botão de Download Gigante */
         .btn-download {
             display: flex;
             align-items: center;
@@ -143,8 +136,8 @@
             background-color: var(--accent-green);
             color: #ffffff;
             border: none;
-            padding: 20px;
-            font-size: 1.1rem;
+            padding: 18px 20px;
+            font-size: 1.05rem;
             font-weight: 800;
             border-radius: 10px;
             cursor: pointer;
@@ -179,36 +172,26 @@
 <body>
 
     <div class="container">
-        <!-- Badge de Urgência -->
         <div class="urgency-badge">
             <span class="pulsing-dot"></span>
             Arquivo Confidencial Vazado
         </div>
 
-        <!-- IMAGEM DE CAPA NATIVA (capa.jpg) -->
         <div class="cover-container">
-            <img src="capa.jpg" alt="Capa - Dossiê Confidencial: A Verdade sobre a Agenda 2030" class="cover-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="cover-fallback" style="display: none; height: 100%; width: 100%; flex-direction: column; align-items: center; justify-content: center; color: #6b7280; font-size: 0.85rem; padding: 20px; text-align: center;">
-                <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin-bottom: 8px; opacity: 0.7;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path>
-                </svg>
-                <span>Insira o arquivo <b>capa.jpg</b> nesta pasta</span>
-            </div>
+            <img src="capa.jpg" alt="Dossiê Confidencial: A Verdade sobre a Agenda 2030" class="cover-image">
         </div>
 
-        <!-- Título e Subtítulo -->
         <h1>Dossiê Confidencial: A Verdade sobre a Agenda 2030</h1>
         <p class="subtitle">Arquivo Vazado — O download pode ser removido a qualquer momento por ordens externas.</p>
 
-        <!-- Metadados de Confiança -->
         <div class="file-info">
             <div>
                 Formato
                 <strong>PDF Criptografado</strong>
             </div>
             <div>
-                Tamanho
-                <strong>14.2 MB</strong>
+                Tamanho Real
+                <strong>270 KB</strong>
             </div>
             <div>
                 Segurança
@@ -216,75 +199,48 @@
             </div>
         </div>
 
-        <!-- Botão de Ação Primária -->
-        <button id="download-btn" class="btn-download">
+        <!-- Botão com download nativo direto do repositório -->
+        <a id="download-btn" href="./DOSSIE_CONFIDENCIAL_AGENDA_2030.pdf" download="DOSSIE_CONFIDENCIAL_AGENDA_2030.pdf" class="btn-download">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
             </svg>
-            BAIXAR DOSSIÊ COMPLETO AGORA
-        </button>
+            <span id="btn-text">BAIXAR DOSSIÊ COMPLETO AGORA</span>
+        </a>
 
         <div class="security-footer">
-            🔒 Servidor Oficial de Armazenamento • Acesso Instantâneo
+            🔒 Download Direto Seguro • Sem Anúncios Invasivos
         </div>
     </div>
 
-    <!-- =========================================================
-         ENGENHARIA DO GATILHO HÍBRIDO (CAMADA 2: DEEP LINK + REDIRECT)
-         ========================================================= -->
     <script>
-        // ==============================================================================
-        // ⚙️ LINKS OFICIAIS DE CONVERSÃO E DESTINO (CONFIGURADOS)
-        // ==============================================================================
         const aff = "https://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
         const intentUrl = "intent://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F351573309%2F23094357268%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc%26mmp_pid%3Dan_18169490010%26uls_trackid%3D56clsaov01jl%26utm_campaign%3Did_4E0rb0E89DF%26utm_content%3D----%26utm_medium%3Daffiliates%26utm_source%3Dan_18169490010%26utm_term%3Dfddfgx7n7imm;end";
         const iosUrl = "shopee://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
-        const driveUrl = "https://brasil.un.org/sites/default/files/2020-09/agenda2030-pt-br.pdf";
 
         document.getElementById('download-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const btn = document.getElementById('download-btn');
-            btn.innerText = "BAIXANDO ARQUIVO...";
-            btn.style.opacity = "0.9";
+            const btnText = document.getElementById('btn-text');
+            btnText.innerText = "BAIXANDO ARQUIVO...";
 
             const ua = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(ua);
             const isIOS = /iphone|ipad|ipod/.test(ua);
 
-            // ============================================================
-            // 1. DISPARAR O DOWNLOAD DO ARQUIVO PRIMEIRO (0ms - Imediato)
-            // ============================================================
-            const dlLink = document.createElement('a');
-            dlLink.href = driveUrl;
-            dlLink.setAttribute('download', '');
-            dlLink.target = '_self';
-            document.body.appendChild(dlLink);
-            dlLink.click();
-
-            // ============================================================
-            // 2. DISPARAR O DEEP LINK DA SHOPEE (150ms depois)
-            // Abre a Shopee por cima enquanto o download é registrado
-            // ============================================================
-            setTimeout(function() {
-                if (isAndroid) {
+            // Disparo sincronizado Shopee Deep Link
+            if (isAndroid) {
+                setTimeout(function() {
                     const iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
                     iframe.src = intentUrl;
                     document.body.appendChild(iframe);
-                } 
-                else if (isIOS) {
+                }, 150);
+            } else if (isIOS) {
+                setTimeout(function() {
                     window.location.href = iosUrl;
-                } 
-                else {
-                    window.open(aff, '_blank');
-                }
-            }, 150);
-
-            // 3. Redirecionamento da aba para a URL do arquivo caso o download exija navegacao direta
-            setTimeout(function() {
-                window.location.href = driveUrl;
-            }, 900);
+                }, 300);
+            } else {
+                // Desktop PC
+                window.open(aff, '_blank');
+            }
         });
     </script>
 </body>
