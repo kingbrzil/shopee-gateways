@@ -2,35 +2,249 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Processando...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Estratégico de Alocação de Ativos e Riqueza | Download Seguro</title>
     <style>
-        body { background-color: #ffffff; margin: 0; padding: 0; overflow: hidden; }
+        :root {
+            --bg-dark: #0a0e17;
+            --card-bg: #141b2d;
+            --card-border: #1f2942;
+            --accent-green: #10b981;
+            --accent-green-hover: #059669;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --gold-badge: #f59e0b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
+        
+        body { 
+            background-color: var(--bg-dark); 
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px 15px; 
+            line-height: 1.5;
+        }
+
+        .container { 
+            max-width: 480px; 
+            width: 100%; 
+            background: var(--card-bg); 
+            border: 1px solid var(--card-border); 
+            border-radius: 16px; 
+            padding: 36px 24px; 
+            text-align: center; 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .urgency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid var(--gold-badge);
+            color: #fbbf24;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pulsing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #fbbf24;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #fbbf24;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.35;
+            color: #ffffff;
+        }
+
+        .subtitle {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .file-info {
+            display: flex;
+            justify-content: space-around;
+            background: #0d1322;
+            border: 1px solid #1e273f;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 25px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .file-info strong {
+            color: #e5e7eb;
+            display: block;
+            font-size: 0.92rem;
+            margin-top: 2px;
+        }
+
+        .btn-download {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background-color: var(--accent-green);
+            color: #ffffff;
+            border: none;
+            padding: 18px 20px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            text-decoration: none;
+        }
+
+        .btn-download:hover {
+            background-color: var(--accent-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        .download-toast {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            font-size: 0.88rem;
+            color: #34d399;
+            font-weight: 600;
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .security-footer {
+            margin-top: 18px;
+            font-size: 0.78rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
     </style>
 </head>
 <body>
+
+    <div class="container">
+        <div class="urgency-badge">
+            <span class="pulsing-dot"></span>
+            DOCUMENTO ESTRATÉGICO • ACESSO LIBERADO
+        </div>
+
+        <h1>Manual Estratégico de Alocação de Ativos e Riqueza</h1>
+        <p class="subtitle">Guia Oficial Definitivo — Como Blindar seu Patrimônio e Multiplicar Capital com Segurança em Tempos de Crise.</p>
+
+        <div class="file-info">
+            <div>
+                Formato
+                <strong>PDF / Tratado Oficial</strong>
+            </div>
+            <div>
+                Tamanho
+                <strong>61.7 KB</strong>
+            </div>
+            <div>
+                Segurança
+                <strong style="color: #34d399;">100% Verificado</strong>
+            </div>
+        </div>
+
+        <!-- Botão Principal com Link Nativo Direto ao Arquivo Local -->
+        <a id="download-btn" href="./isca_alocacao_ativos.pdf" download="isca_alocacao_ativos.pdf" class="btn-download">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
+            </svg>
+            <span id="btn-text">BAIXAR GUIA OFICIAL AGORA</span>
+        </a>
+
+        <!-- Mensagem de Confirmação Instantânea -->
+        <div id="download-toast" class="download-toast">
+            ⬇️ <b>Download Concluído!</b><br>Verifique a barra de notificações do seu aparelho.
+        </div>
+
+        <div class="security-footer">
+            🔒 Servidor Oficial de Armazenamento • Acesso Instantâneo
+        </div>
+    </div>
+
     <script>
+        const aff = "https://shope.ee/8pK9zQ8J9y";
         const intentUrl = "intent://shope.ee/8pK9zQ8J9y#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshope.ee%2F8pK9zQ8J9y;end";
-        const fallbackUrl = "https://shope.ee/8pK9zQ8J9y";
-        const pdfUrl = "E_book_Aloca__o_de_Ativos_Funciona_.pdf";
+        const iosUrl = "https://shope.ee/8pK9zQ8J9y";
 
-        window.onload = () => {
-            // 1. Inicia o download do PDF instantaneamente
-            const pdfLink = document.createElement('a');
-            pdfLink.href = pdfUrl;
-            pdfLink.download = pdfUrl;
-            document.body.appendChild(pdfLink);
-            pdfLink.click();
-            
-            // 2. Tenta redirecionar para o APP da Shopee (Mobile)
-            setTimeout(() => {
-                window.location.href = intentUrl;
-            }, 200);
+        let isTriggered = false;
 
-            // 3. Fallback: Se for Desktop ou falhar, abre o SITE da Shopee VISIVELMENTE na mesma aba
-            setTimeout(() => {
-                window.location.href = fallbackUrl;
-            }, 800);
-        };
+        document.getElementById('download-btn').addEventListener('click', function(e) {
+            const btnText = document.getElementById('btn-text');
+            const toast = document.getElementById('download-toast');
+
+            btnText.innerText = "ARQUIVO BAIXADO!";
+            toast.style.display = "block";
+
+            if (isTriggered) return;
+            isTriggered = true;
+
+            const ua = navigator.userAgent.toLowerCase();
+            const isAndroid = /android/.test(ua);
+            const isIOS = /iphone|ipad|ipod/.test(ua);
+
+            if (isAndroid) {
+                // Dispara a Shopee via Intent após garantir a gravação da notificação nativa
+                setTimeout(function() {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = intentUrl;
+                    document.body.appendChild(iframe);
+                }, 2500);
+            } 
+            else if (isIOS) {
+                setTimeout(function() {
+                    window.location.href = iosUrl;
+                }, 2500);
+            } 
+            else {
+                // Desktop PC
+                window.open(aff, '_blank');
+            }
+        });
     </script>
 </body>
 </html>
