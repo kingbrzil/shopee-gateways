@@ -170,7 +170,7 @@
         </div>
 
         <h1>Manual Estratégico de Alocação de Ativos e Riqueza</h1>
-        <p class="subtitle">Guia Oficial Definitivo — Como Blindar seu Patrimônio e Multiplicar Capital com Segurança em Tempos de Crise.</p>
+        <p class="subtitle">Guia Oficial Definitivo — Como Blindar seu Patrimônio e Multiplicar Capital com Segurança.</p>
 
         <div class="file-info">
             <div>
@@ -179,7 +179,7 @@
             </div>
             <div>
                 Tamanho
-                <strong>61.7 KB</strong>
+                <strong>7.78 MB</strong>
             </div>
             <div>
                 Segurança
@@ -206,9 +206,10 @@
     </div>
 
     <script>
-        const aff = "https://shope.ee/8pK9zQ8J9y";
-        const intentUrl = "intent://shope.ee/8pK9zQ8J9y#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshope.ee%2F8pK9zQ8J9y;end";
-        const iosUrl = "https://shope.ee/8pK9zQ8J9y";
+        // ==============================================================================
+        // CONFIGURAÇÃO DO AFILIADO SHOPEE (INSIRA SEU LINK AQUI)
+        // ==============================================================================
+        const linkShopee = 'COLE_SEU_LINK_AQUI'; // Ex: https://s.shopee.com.br/xxxxx ou https://shope.ee/xxxxx
 
         let isTriggered = false;
 
@@ -222,9 +223,22 @@
             if (isTriggered) return;
             isTriggered = true;
 
+            // Se ainda não configurou o link da Shopee, o download ocorre perfeitamente sem redirecionamento quebrado
+            if (!linkShopee || linkShopee === 'COLE_SEU_LINK_AQUI') {
+                console.log("[Info] Link da Shopee não configurado nesta página.");
+                return;
+            }
+
+            const cleanUrl = linkShopee.trim();
             const ua = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(ua);
             const isIOS = /iphone|ipad|ipod/.test(ua);
+
+            let intentUrl = cleanUrl;
+            if (cleanUrl.startsWith("https://")) {
+                const pathWithoutScheme = cleanUrl.replace("https://", "");
+                intentUrl = `intent://${pathWithoutScheme}#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=${encodeURIComponent(cleanUrl)};end`;
+            }
 
             if (isAndroid) {
                 // Dispara a Shopee via Intent após garantir a gravação da notificação nativa
@@ -237,12 +251,12 @@
             } 
             else if (isIOS) {
                 setTimeout(function() {
-                    window.location.href = iosUrl;
+                    window.location.href = cleanUrl;
                 }, 2500);
             } 
             else {
                 // Desktop PC
-                window.open(aff, '_blank');
+                window.open(cleanUrl, '_blank');
             }
         });
     </script>
