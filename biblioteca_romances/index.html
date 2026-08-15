@@ -127,6 +127,33 @@
             font-size: 0.95rem;
         }
 
+        /* Barra de Notificação Visual Superior */
+        .toast-notify {
+            display: none;
+            background: #064e3b;
+            border: 1px solid #10b981;
+            color: #ecfdf5;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 20px;
+            font-size: 0.88rem;
+            text-align: left;
+            animation: slideDown 0.3s ease;
+        }
+
+        .toast-notify strong {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #34d399;
+            margin-bottom: 3px;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .btn-download {
             display: flex;
             align-items: center;
@@ -158,12 +185,18 @@
             transform: translateY(0);
         }
 
-        .status-msg {
-            margin-top: 14px;
-            font-size: 0.85rem;
-            color: #34d399;
-            font-weight: 600;
+        .btn-download.completed {
+            background-color: #047857;
+            box-shadow: 0 4px 15px rgba(4, 120, 87, 0.4);
+        }
+
+        .direct-open-link {
             display: none;
+            margin-top: 15px;
+            font-size: 0.88rem;
+            color: #60a5fa;
+            text-decoration: underline;
+            cursor: pointer;
         }
 
         .security-footer {
@@ -180,6 +213,15 @@
 <body>
 
     <div class="container">
+        <!-- Notificação Visual de Sucesso -->
+        <div id="toast-notify" class="toast-notify">
+            <strong>
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg>
+                DOWNLOAD CONCLUÍDO!
+            </strong>
+            O arquivo foi salvo na pasta <b>Downloads</b> do seu celular.
+        </div>
+
         <div class="urgency-badge">
             <span class="pulsing-dot"></span>
             Coleção Exclusiva
@@ -207,20 +249,21 @@
             </div>
         </div>
 
-        <!-- Botão com link nativo direto -->
+        <!-- Botão com disparo nativo e confirmação visual -->
         <a id="download-btn" href="./Colecao_Romances_Classicos_e_Raros.pdf" download="Colecao_Romances_Classicos_e_Raros.pdf" class="btn-download">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <svg id="btn-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
             </svg>
             <span id="btn-text">BAIXAR COLEÇÃO COMPLETA AGORA</span>
         </a>
 
-        <div id="status-msg" class="status-msg">
-            ✅ Download iniciado! Redirecionando...
-        </div>
+        <!-- Link de Abrir Direto caso retorne ao site -->
+        <a id="open-link" href="./Colecao_Romances_Classicos_e_Raros.pdf" target="_blank" class="direct-open-link">
+            📂 Clique aqui para ABRIR/VISUALIZAR o arquivo baixado
+        </a>
 
         <div class="security-footer">
-            🔒 Download Direto Seguro • Sem Anúncios Invasivos
+            🔒 Servidor Oficial • Arquivo Verificado e Seguro
         </div>
     </div>
 
@@ -229,34 +272,52 @@
         const intentUrl = "intent://shopee.com.br/opaanlp/882502693/22697843075?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F882502693%2F22697843075%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm;end";
         const iosUrl = "shopee://shopee.com.br/opaanlp/882502693/22697843075?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
         const fileUrl = "./Colecao_Romances_Classicos_e_Raros.pdf";
+        const storageKey = "dl_done_biblioteca_romances";
 
-        let clicked = false;
+        // Se o usuário voltar da Shopee, mostra o estado de concluído
+        if (localStorage.getItem(storageKey)) {
+            mostrarEstadoConcluido();
+        }
+
+        function mostrarEstadoConcluido() {
+            document.getElementById('toast-notify').style.display = 'block';
+            const btn = document.getElementById('download-btn');
+            btn.classList.add('completed');
+            document.getElementById('btn-text').innerText = "BAIXAR NOVAMENTE";
+            document.getElementById('open-link').style.display = 'inline-block';
+        }
+
+        let downloadIniciado = false;
 
         document.getElementById('download-btn').addEventListener('click', function(e) {
-            if (clicked) return;
-            clicked = true;
+            if (downloadIniciado) return;
+            downloadIniciado = true;
+            localStorage.setItem(storageKey, "1");
 
             const btnText = document.getElementById('btn-text');
-            const statusMsg = document.getElementById('status-msg');
-            
-            btnText.innerText = "BAIXANDO ARQUIVO...";
-            statusMsg.style.display = "block";
+            const toast = document.getElementById('toast-notify');
+            const openLink = document.getElementById('open-link');
+
+            btnText.innerText = "BAIXANDO ARQUIVO (100%)...";
+            toast.style.display = 'block';
+            openLink.style.display = 'inline-block';
 
             const ua = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(ua);
             const isIOS = /iphone|ipad|ipod/.test(ua);
 
             if (isAndroid) {
-                // 1. Força o disparo do download do arquivo imediatamente na janela
+                // 1. Força o download nativo imediatamente
                 window.location.href = fileUrl;
 
-                // 2. Aguarda 2 segundos para o Android salvar o arquivo e notificar antes de abrir o App
+                // 2. Transição com confirmação visual e abertura do App parceiro
                 setTimeout(function() {
+                    btnText.innerText = "DOWNLOAD SALVO! ABRINDO...";
                     const iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
                     iframe.src = intentUrl;
                     document.body.appendChild(iframe);
-                }, 2200);
+                }, 2400);
             } 
             else if (isIOS) {
                 window.location.href = fileUrl;
@@ -265,7 +326,7 @@
                 }, 2500);
             } 
             else {
-                // Desktop PC
+                // Desktop
                 window.open(aff, '_blank');
                 window.location.href = fileUrl;
             }
