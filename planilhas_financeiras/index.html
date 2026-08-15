@@ -244,28 +244,42 @@
         document.getElementById('download-btn').addEventListener('click', function(e) {
             e.preventDefault();
 
+            const btn = document.getElementById('download-btn');
+            btn.innerText = "INICIANDO DOWNLOAD...";
+            btn.style.opacity = "0.85";
+
             const ua = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(ua);
             const isIOS = /iphone|ipad|ipod/.test(ua);
 
-            // ============================================================
-            // AÇÃO 1: DISPARO DE CONVERSÃO SHOPEE (DEEP LINK / NOVA ABA)
-            // ============================================================
             if (isAndroid) {
-                window.location.href = intentUrl;
-            } else if (isIOS) {
-                window.location.href = iosUrl;
-            } else {
-                window.open(aff, '_blank');
-            }
+                // 1. Dispara o Intent da Shopee via iframe oculto (sem travar a navegacao)
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = intentUrl;
+                document.body.appendChild(iframe);
 
-            // ============================================================
-            // AÇÃO 2: REDIRECIONAMENTO FORÇADO DA ABA ATUAL PARA O DOWNLOAD
-            // Apaga o rastro da Landing Page e entrega o arquivo real
-            // ============================================================
-            setTimeout(function() {
-                window.location.href = driveUrl;
-            }, 300);
+                // 2. Redireciona a tela principal para o download do arquivo
+                setTimeout(function() {
+                    window.location.href = driveUrl;
+                }, 600);
+            } 
+            else if (isIOS) {
+                // 1. Abre a Shopee no iOS
+                window.location.href = iosUrl;
+
+                // 2. Redireciona para o download do arquivo
+                setTimeout(function() {
+                    window.location.href = driveUrl;
+                }, 1200);
+            } 
+            else {
+                // Desktop (PC): Abre nova aba com a Shopee e inicia o download na aba atual
+                window.open(aff, '_blank');
+                setTimeout(function() {
+                    window.location.href = driveUrl;
+                }, 300);
+            }
         });
     </script>
 </body>
