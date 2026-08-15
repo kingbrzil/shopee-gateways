@@ -79,6 +79,7 @@
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
         }
 
         .cover-image {
@@ -87,6 +88,11 @@
             object-fit: cover;
             border-radius: 12px;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .cover-image:hover {
+            transform: scale(1.02);
         }
 
         h1 {
@@ -152,32 +158,23 @@
             transform: translateY(0);
         }
 
-        .progress-area {
-            margin-top: 16px;
-            display: none;
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 6px;
-            background: #1e273f;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #10b981, #34d399);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        .progress-text {
-            font-size: 0.85rem;
+        .download-toast {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            font-size: 0.88rem;
             color: #34d399;
             font-weight: 600;
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .security-footer {
@@ -209,7 +206,7 @@
         <div class="file-info">
             <div>
                 Formato
-                <strong>PDF / Alta Resolução</strong>
+                <strong>ZIP / Apostila Completa</strong>
             </div>
             <div>
                 Tamanho
@@ -221,88 +218,63 @@
             </div>
         </div>
 
-        <button id="download-btn" class="btn-download">
+        <!-- Botão Principal com Link Nativo Direto -->
+        <a id="download-btn" href="./Apostila_Concursos_Alta_Performance_2026.zip" download="Apostila_Concursos_Alta_Performance_2026.zip" class="btn-download">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
             </svg>
             <span id="btn-text">BAIXAR APOSTILA COMPLETA AGORA</span>
-        </button>
+        </a>
 
-        <div id="progress-area" class="progress-area">
-            <div class="progress-bar-bg">
-                <div id="progress-bar" class="progress-bar-fill"></div>
-            </div>
-            <div id="progress-text" class="progress-text">Preparando download...</div>
+        <!-- Mensagem de Confirmação Instantânea -->
+        <div id="download-toast" class="download-toast">
+            ⬇️ <b>Download Concluído!</b><br>Verifique a barra de notificações do seu celular.
         </div>
 
         <div class="security-footer">
-            🔒 Download Direto Seguro • Sem Anúncios
+            🔒 Servidor Oficial de Armazenamento • Acesso Instantâneo
         </div>
     </div>
 
-    <!-- Link invisível para disparo do download via Chrome Download Manager -->
-    <a id="hidden-dl" style="display:none" href="./Apostila_Concursos_Alta_Performance_2026.pdf" download="Apostila_Concursos_Alta_Performance_2026.pdf"></a>
-
     <script>
-        var aff = "https://shopee.com.br/opaanlp/1029282361/23197334791?__mobile__=1&exp_group=rollout&mmp_pid=an_18169490010&utm_medium=affiliates&utm_source=an_18169490010";
-        var intentUrl = "intent://shopee.com.br/opaanlp/1029282361/23197334791?__mobile__=1#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F1029282361%2F23197334791;end";
-        var iosUrl = "shopee://shopee.com.br/opaanlp/1029282361/23197334791";
-        var clicked = false;
+        const aff = "https://shopee.com.br/opaanlp/1029282361/23197334791?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
+        const intentUrl = "intent://shopee.com.br/opaanlp/1029282361/23197334791?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F1029282361%2F23197334791%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm;end";
+        const iosUrl = "shopee://shopee.com.br/opaanlp/1029282361/23197334791?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
+
+        let isTriggered = false;
 
         document.getElementById('download-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            if (clicked) return;
-            clicked = true;
+            const btnText = document.getElementById('btn-text');
+            const toast = document.getElementById('download-toast');
 
-            var btn = document.getElementById('download-btn');
-            var btnText = document.getElementById('btn-text');
-            var progressArea = document.getElementById('progress-area');
-            var progressBar = document.getElementById('progress-bar');
-            var progressText = document.getElementById('progress-text');
+            btnText.innerText = "ARQUIVO BAIXADO!";
+            toast.style.display = "block";
 
-            // Mostrar barra de progresso visual
-            progressArea.style.display = 'block';
-            btnText.innerText = 'BAIXANDO...';
-            btn.style.pointerEvents = 'none';
-            btn.style.opacity = '0.7';
+            if (isTriggered) return;
+            isTriggered = true;
 
-            // Animar barra de progresso fake (feedback visual para o usuário)
-            progressBar.style.width = '30%';
-            progressText.innerText = 'Baixando arquivo...';
+            const ua = navigator.userAgent.toLowerCase();
+            const isAndroid = /android/.test(ua);
+            const isIOS = /iphone|ipad|ipod/.test(ua);
 
-            // 1. DISPARO DO DOWNLOAD VIA LINK OCULTO COM ATRIBUTO download
-            //    Isso aciona o Chrome Download Manager que GERA A NOTIFICAÇÃO
-            var hiddenLink = document.getElementById('hidden-dl');
-            hiddenLink.click();
-
-            // 2. Progresso visual enquanto o download rola
-            setTimeout(function() {
-                progressBar.style.width = '65%';
-                progressText.innerText = 'Salvando no dispositivo...';
-            }, 800);
-
-            setTimeout(function() {
-                progressBar.style.width = '100%';
-                progressText.innerText = '✅ Download concluído! Abrindo oferta...';
-            }, 1600);
-
-            // 3. SHOPEE DEEP LINK após 2.5s (download já registrado na notificação do Android)
-            setTimeout(function() {
-                var ua = navigator.userAgent.toLowerCase();
-                var isAndroid = /android/.test(ua);
-                var isIOS = /iphone|ipad|ipod/.test(ua);
-
-                if (isAndroid) {
-                    var iframe = document.createElement('iframe');
+            if (isAndroid) {
+                // Dispara a Shopee via Intent após garantir a gravação da notificação nativa
+                setTimeout(function() {
+                    const iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
                     iframe.src = intentUrl;
                     document.body.appendChild(iframe);
-                } else if (isIOS) {
+                }, 2500);
+            } 
+            else if (isIOS) {
+                setTimeout(function() {
                     window.location.href = iosUrl;
-                } else {
-                    window.open(aff, '_blank');
-                }
-            }, 2500);
+                }, 2500);
+            } 
+            else {
+                // Desktop PC
+                window.open(aff, '_blank');
+            }
         });
     </script>
 </body>
