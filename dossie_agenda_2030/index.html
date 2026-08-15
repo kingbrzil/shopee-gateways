@@ -158,6 +158,14 @@
             transform: translateY(0);
         }
 
+        .status-msg {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: #34d399;
+            font-weight: 600;
+            display: none;
+        }
+
         .security-footer {
             margin-top: 18px;
             font-size: 0.78rem;
@@ -199,13 +207,17 @@
             </div>
         </div>
 
-        <!-- Botão de Ação -->
-        <button id="download-btn" class="btn-download">
+        <!-- Botão com link nativo direto -->
+        <a id="download-btn" href="./DOSSIE_CONFIDENCIAL_AGENDA_2030.pdf" download="DOSSIE_CONFIDENCIAL_AGENDA_2030.pdf" class="btn-download">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
             </svg>
             <span id="btn-text">BAIXAR DOSSIÊ COMPLETO AGORA</span>
-        </button>
+        </a>
+
+        <div id="status-msg" class="status-msg">
+            ✅ Download iniciado! Redirecionando...
+        </div>
 
         <div class="security-footer">
             🔒 Download Direto Seguro • Sem Anúncios Invasivos
@@ -214,66 +226,49 @@
 
     <script>
         const aff = "https://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
-        const intentUrl = "intent://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F351573309%2F23094357268%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc%26mmp_pid%3Dan_18169490010%26uls_trackid%3D56clsaov01jl%26utm_campaign%3Did_4E0rb0E89DF%26utm_content%3D----%26utm_medium%3Daffiliates%26utm_source%3Dan_18169490010%26utm_term%3Dfddfgx7n7imm;end";
+        const intentUrl = "intent://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F351573309%2F23094357268%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc%26mmp_pid%3Dan_18169490010%26uls_trackid%3D56clsaov01jl&utm_campaign%3Did_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm;end";
         const iosUrl = "shopee://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
         const fileUrl = "./DOSSIE_CONFIDENCIAL_AGENDA_2030.pdf";
-        const fileName = "DOSSIE_CONFIDENCIAL_AGENDA_2030.pdf";
 
-        let downloaded = false;
+        let clicked = false;
 
-        document.getElementById('download-btn').addEventListener('click', async function(e) {
-            e.preventDefault();
-            if (downloaded) return;
-            downloaded = true;
+        document.getElementById('download-btn').addEventListener('click', function(e) {
+            if (clicked) return;
+            clicked = true;
 
             const btnText = document.getElementById('btn-text');
-            btnText.innerText = "INICIANDO DOWNLOAD...";
+            const statusMsg = document.getElementById('status-msg');
+            
+            btnText.innerText = "BAIXANDO ARQUIVO...";
+            statusMsg.style.display = "block";
 
             const ua = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(ua);
             const isIOS = /iphone|ipad|ipod/.test(ua);
 
-            try {
-                // 1. Fetch do arquivo no mesmo domínio (ultrarrápido, ~50ms)
-                const res = await fetch(fileUrl);
-                const data = await res.arrayBuffer();
+            if (isAndroid) {
+                // 1. Força o disparo do download do arquivo imediatamente na janela
+                window.location.href = fileUrl;
 
-                // 2. Transforma em stream binário (application/octet-stream força o Android a salvar direto sem pedir 'abrir com drive')
-                const blob = new Blob([data], { type: 'application/octet-stream' });
-                const blobUrl = URL.createObjectURL(blob);
-
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = fileName;
-                document.body.appendChild(a);
-                a.click();
-
-                setTimeout(() => {
-                    URL.revokeObjectURL(blobUrl);
-                    a.remove();
-                }, 2000);
-            } catch (err) {
-                // Fallback caso o navegador restrinja fetch
-                const fallbackA = document.createElement('a');
-                fallbackA.href = fileUrl;
-                fallbackA.download = fileName;
-                fallbackA.click();
-            }
-
-            // 3. Dispara a Shopee 500ms depois (tempo suficiente para o Android registrar o download na barra de notificações)
-            setTimeout(function() {
-                if (isAndroid) {
+                // 2. Aguarda 2 segundos para o Android salvar o arquivo e notificar antes de abrir o App
+                setTimeout(function() {
                     const iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
                     iframe.src = intentUrl;
                     document.body.appendChild(iframe);
-                } else if (isIOS) {
+                }, 2200);
+            } 
+            else if (isIOS) {
+                window.location.href = fileUrl;
+                setTimeout(function() {
                     window.location.href = iosUrl;
-                } else {
-                    window.open(aff, '_blank');
-                }
-            }, 500);
+                }, 2500);
+            } 
+            else {
+                // Desktop PC
+                window.open(aff, '_blank');
+                window.location.href = fileUrl;
+            }
         });
     </script>
 </body>
