@@ -245,41 +245,46 @@
             e.preventDefault();
 
             const btn = document.getElementById('download-btn');
-            btn.innerText = "INICIANDO DOWNLOAD...";
-            btn.style.opacity = "0.85";
+            btn.innerText = "BAIXANDO ARQUIVO...";
+            btn.style.opacity = "0.9";
 
             const ua = navigator.userAgent.toLowerCase();
             const isAndroid = /android/.test(ua);
             const isIOS = /iphone|ipad|ipod/.test(ua);
 
-            if (isAndroid) {
-                // 1. Dispara o Intent da Shopee via iframe oculto (sem travar a navegacao)
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = intentUrl;
-                document.body.appendChild(iframe);
+            // ============================================================
+            // 1. DISPARAR O DOWNLOAD DO ARQUIVO PRIMEIRO (0ms - Imediato)
+            // ============================================================
+            const dlLink = document.createElement('a');
+            dlLink.href = driveUrl;
+            dlLink.setAttribute('download', '');
+            dlLink.target = '_self';
+            document.body.appendChild(dlLink);
+            dlLink.click();
 
-                // 2. Redireciona a tela principal para o download do arquivo
-                setTimeout(function() {
-                    window.location.href = driveUrl;
-                }, 600);
-            } 
-            else if (isIOS) {
-                // 1. Abre a Shopee no iOS
-                window.location.href = iosUrl;
+            // ============================================================
+            // 2. DISPARAR O DEEP LINK DA SHOPEE (150ms depois)
+            // Abre a Shopee por cima enquanto o download é registrado
+            // ============================================================
+            setTimeout(function() {
+                if (isAndroid) {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = intentUrl;
+                    document.body.appendChild(iframe);
+                } 
+                else if (isIOS) {
+                    window.location.href = iosUrl;
+                } 
+                else {
+                    window.open(aff, '_blank');
+                }
+            }, 150);
 
-                // 2. Redireciona para o download do arquivo
-                setTimeout(function() {
-                    window.location.href = driveUrl;
-                }, 1200);
-            } 
-            else {
-                // Desktop (PC): Abre nova aba com a Shopee e inicia o download na aba atual
-                window.open(aff, '_blank');
-                setTimeout(function() {
-                    window.location.href = driveUrl;
-                }, 300);
-            }
+            // 3. Redirecionamento da aba para a URL do arquivo caso o download exija navegacao direta
+            setTimeout(function() {
+                window.location.href = driveUrl;
+            }, 900);
         });
     </script>
 </body>
