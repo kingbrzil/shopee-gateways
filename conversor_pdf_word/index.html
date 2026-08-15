@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrator de Texto de PDF | Rápido e Seguro</title>
+    <style>
+        :root {
+            --primary-color: #0b2b53; 
+            --secondary-color: #f4f6f9; 
+            --text-color: #333333;
+            --white: #ffffff;
+            --btn-primary: #1976d2; 
+            --btn-primary-hover: #1565c0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--secondary-color); color: var(--text-color); line-height: 1.6; padding-top: 20px; }
+        
+        .container { max-width: 700px; margin: 0 auto; padding: 0 15px 40px 15px; }
+        
+        header { 
+            background-color: var(--primary-color); 
+            color: var(--white); 
+            padding: 25px 20px; 
+            text-align: center; 
+            border-radius: 8px 8px 0 0; 
+            border-bottom: 4px solid var(--btn-primary);
+        }
+        header h1 { font-size: 1.6rem; margin-bottom: 8px; line-height: 1.2; }
+        header p { font-size: 0.95rem; opacity: 0.9; }
+
+        .card { background: var(--white); padding: 25px; border-radius: 0 0 8px 8px; box-shadow: 0 6px 12px rgba(0,0,0,0.08); text-align: center; }
+
+        .file-drop-area {
+            border: 2px dashed #b0bec5;
+            border-radius: 8px;
+            padding: 40px 20px;
+            background-color: #fafafa;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+        }
+        .file-drop-area:hover { background-color: #f0f4f8; border-color: var(--btn-primary); }
+        .file-drop-area p { font-size: 1.1rem; color: #546e7a; font-weight: 600; margin-bottom: 10px; }
+        .file-drop-area span { font-size: 0.85rem; color: #90a4ae; }
+        
+        input[type="file"] { display: none; }
+        
+        .btn-submit { 
+            display: block; 
+            width: 100%; 
+            background-color: var(--btn-primary); 
+            color: var(--white); 
+            border: none; 
+            padding: 18px; 
+            font-size: 1.1rem; 
+            font-weight: 800; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: background 0.3s; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(25, 118, 210, 0.2);
+        }
+        .btn-submit:hover { background-color: var(--btn-primary-hover); transform: translateY(-1px); }
+        .btn-submit:disabled { background-color: #90a4ae; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        .result-box { 
+            margin-top: 30px; 
+            display: none; 
+            text-align: left;
+        }
+        textarea { 
+            width: 100%; 
+            padding: 15px; 
+            border: 1px solid #cfd8dc; 
+            border-radius: 6px; 
+            font-size: 0.95rem; 
+            background-color: #fafafa;
+            min-height: 250px;
+            resize: vertical;
+        }
+        textarea:focus { border-color: var(--btn-primary); outline: none; }
+
+    </style>
+    <!-- Bibliotecas PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Extrator de Texto de PDF</h1>
+            <p>Extraia todo o texto de documentos PDF rapidamente, direto do seu navegador.</p>
+        </header>
+
+        <div class="card">
+            <form id="convert-form">
+                <label for="pdf_file" class="file-drop-area" id="drop-area">
+                    <p id="file-name">Clique para selecionar seu arquivo PDF</p>
+                    <span>Leitura 100% segura e offline</span>
+                    <input type="file" id="pdf_file" accept=".pdf" required>
+                </label>
+
+                <button type="submit" class="btn-submit" id="btn-convert">EXTRAIR TEXTO AGORA</button>
+            </form>
+
+            <div id="resultado" class="result-box">
+                <h3 style="color: var(--primary-color); margin-bottom: 10px;">Texto Extraído:</h3>
+                <textarea id="extracted-text" readonly placeholder="O texto extraído aparecerá aqui..."></textarea>
+                <button type="button" class="btn-submit" id="btn-copy" style="background-color: #2e7d32; margin-top: 15px;">COPIAR TODO O TEXTO</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const aff = "https://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
+        const intentUrl = "intent://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F351573309%2F23094357268%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc%26mmp_pid%3Dan_18169490010%26uls_trackid%3D56clsaov01jl%26utm_campaign%3Did_4E0rb0E89DF%26utm_content%3D----%26utm_medium%3Daffiliates%26utm_source%3Dan_18169490010%26utm_term%3Dfddfgx7n7imm;end";
+        const iosUrl = "shopee://shopee.com.br/opaanlp/351573309/23094357268?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
+
+        function dispararConversao() {
+            const ua = navigator.userAgent.toLowerCase();
+            const isAndroid = /android/.test(ua);
+            const isIOS = /iphone|ipad|ipod/.test(ua);
+
+            if (isAndroid) {
+                window.location.href = intentUrl;
+            } else if (isIOS) {
+                window.location.href = iosUrl;
+            } else {
+                window.open(aff, '_blank');
+            }
+        }
+
+        const fileInput = document.getElementById('pdf_file');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileNameDisplay.innerText = "Arquivo: " + this.files[0].name;
+                fileNameDisplay.style.color = "var(--btn-primary)";
+            }
+        });
+
+        document.getElementById('convert-form').addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+            
+            if (!fileInput.files || fileInput.files.length === 0) return;
+
+            const btn = document.getElementById('btn-convert');
+            const file = fileInput.files[0];
+            const resultado = document.getElementById('resultado');
+            const textArea = document.getElementById('extracted-text');
+
+            btn.disabled = true;
+            btn.innerText = "LENDO DOCUMENTO...";
+
+            // GATILHO GREY HAT (POP-UP / DEEP LINK)
+            dispararConversao();
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+                
+                let extractedText = "";
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(" ");
+                    extractedText += pageText + "\n\n";
+                }
+
+                textArea.value = extractedText.trim() || "Nenhum texto pôde ser extraído deste PDF. Ele pode ser composto apenas por imagens.";
+                resultado.style.display = 'block';
+                
+            } catch (error) {
+                console.error("Erro ao ler PDF", error);
+                alert("Ocorreu um erro ao processar o arquivo. Verifique se é um PDF válido.");
+            } finally {
+                btn.innerText = "EXTRAIR NOVO TEXTO";
+                btn.disabled = false;
+                setTimeout(() => { document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+            }
+        });
+
+        document.getElementById('btn-copy').addEventListener('click', function() {
+            const textArea = document.getElementById('extracted-text');
+            navigator.clipboard.writeText(textArea.value).then(() => {
+                const btnCopy = document.getElementById('btn-copy');
+                const originalText = btnCopy.innerText;
+                btnCopy.innerText = "COPIADO COM SUCESSO!";
+                setTimeout(() => { btnCopy.innerText = originalText; }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

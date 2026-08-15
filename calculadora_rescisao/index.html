@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Rescisão de Contrato | Simulação Exata do RH</title>
+    <style>
+        /* =========================================================
+           BLOCO 1: ESTRUTURA VISUAL E CSS (DESIGN RH / CONTABILIDADE)
+           ========================================================= */
+        :root {
+            --primary-color: #0b2b53; 
+            --secondary-color: #f4f6f9; 
+            --text-color: #333333;
+            --white: #ffffff;
+            --btn-primary: #1976d2; 
+            --btn-primary-hover: #1565c0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--secondary-color); color: var(--text-color); line-height: 1.6; padding-top: 20px; }
+        
+        .container { max-width: 600px; margin: 0 auto; padding: 0 15px 40px 15px; }
+        
+        header { 
+            background-color: var(--primary-color); 
+            color: var(--white); 
+            padding: 25px 20px; 
+            text-align: center; 
+            border-radius: 8px 8px 0 0; 
+            border-bottom: 4px solid var(--btn-primary);
+        }
+        header h1 { font-size: 1.6rem; margin-bottom: 8px; line-height: 1.2; }
+        header p { font-size: 0.95rem; opacity: 0.9; }
+
+        .card { background: var(--white); padding: 25px; border-radius: 0 0 8px 8px; box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+
+        .form-group { margin-bottom: 20px; }
+        .form-row { display: flex; gap: 15px; }
+        .form-row .form-group { flex: 1; }
+        
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary-color); font-size: 0.95rem; }
+        input[type="number"], input[type="date"], select { 
+            width: 100%; 
+            padding: 14px; 
+            border: 1px solid #cfd8dc; 
+            border-radius: 6px; 
+            font-size: 1rem; 
+            background-color: #fafafa;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus { border-color: var(--btn-primary); outline: none; }
+        
+        .btn-submit { 
+            display: block; 
+            width: 100%; 
+            background-color: var(--btn-primary); 
+            color: var(--white); 
+            border: none; 
+            padding: 18px; 
+            font-size: 1.1rem; 
+            font-weight: 800; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: background 0.3s; 
+            margin-top: 30px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(25, 118, 210, 0.2);
+        }
+        .btn-submit:hover { background-color: var(--btn-primary-hover); transform: translateY(-1px); }
+
+        .result-box { 
+            margin-top: 30px; 
+            padding: 20px; 
+            background-color: #f8fbfd; 
+            border: 1px solid #e1e8ed;
+            border-left: 6px solid var(--primary-color); 
+            border-radius: 6px; 
+            display: none; 
+        }
+        .result-box h3 { color: var(--primary-color); margin-bottom: 15px; border-bottom: 1px solid #d0d7de; padding-bottom: 10px; font-size: 1.2rem; }
+        .result-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; color: #444; }
+        .result-total { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-top: 15px; 
+            font-size: 1.3rem; 
+            font-weight: 900; 
+            color: var(--primary-color); 
+            border-top: 2px dashed #d0d7de; 
+            padding-top: 15px; 
+        }
+        .highlight-red { color: #e53935; font-weight: 600; }
+        .highlight-green { color: #2e7d32; font-weight: 600; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABEÇALHO -->
+        <header>
+            <h1>Simulador Exato de Rescisão</h1>
+            <p>Descubra os valores precisos dos seus direitos trabalhistas, idêntico aos cálculos de RH.</p>
+        </header>
+
+        <div class="card">
+            <!-- FORMULÁRIO COMPLEXO -->
+            <form id="rescisao-form">
+                <div class="form-group">
+                    <label for="salario">Salário Bruto Mensal (R$)</label>
+                    <input type="number" id="salario" placeholder="Ex: 2500" step="0.01" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="admissao">Data de Admissão</label>
+                        <input type="date" id="admissao" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="demissao">Data de Demissão</label>
+                        <input type="date" id="demissao" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="motivo">Motivo do Desligamento</label>
+                    <select id="motivo" required>
+                        <option value="sem_justa_causa">Demissão Sem Justa Causa</option>
+                        <option value="pedido">Pedido de Demissão</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="aviso">Aviso Prévio</label>
+                        <select id="aviso" required>
+                            <option value="trabalhado">Trabalhado</option>
+                            <option value="indenizado">Indenizado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ferias_vencidas">Férias Vencidas?</label>
+                        <select id="ferias_vencidas" required>
+                            <option value="nao">Não</option>
+                            <option value="sim">Sim</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">SIMULAR RESCISÃO AGORA</button>
+            </form>
+
+            <!-- CAIXA DE RESULTADO -->
+            <div id="resultado" class="result-box">
+                <h3>Extrato Detalhado</h3>
+                <div id="extrato-itens"></div>
+                
+                <div class="result-total">
+                    <span>Total Estimado a Receber:</span>
+                    <span id="valor-total">R$ 0,00</span>
+                </div>
+                <div style="font-size: 11px; color: #757575; margin-top: 10px; text-align: center; line-height: 1.3; font-style: italic;">
+                    * Simulação aproximada baseada nas regras da CLT. Os valores reais podem sofrer alterações devido a descontos de INSS, IRRF e convenções coletivas.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         BLOCO 2 & 3: MOTOR MATEMÁTICO AVANÇADO E PIXEL FANTASMA
+         ========================================================= -->
+    <script>
+        // LINK DO PEDÁGIO INVISÍVEL (AFILIADO)
+        const aff = "https://shopee.com.br/opaanlp/372765275/22298955297?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAx1miwNHFPXLaWbOH-s3Yy3nGbXkXvRNGpBTnPRINPaliRWLkVnt9EDQz6nDGN6E51Lq2GhitUmVS3udmB8_OJ51FVnoUeB8xaHoGWLBG_kBFFmo-sIFVkbMerUOkaP8Fb82lXwT-In5DwSzBXmYP5eYR2MGvdboijOpgsbcJUfEQvWnvp7EbU6wZPk0vFGUomL3vk&mmp_pid=an_18169490010&uls_trackid=56cls89800l7&utm_campaign=id_4wjhaa1moPJ&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfevxmuonx";
+        const intentUrl = "intent://shopee.com.br/opaanlp/372765275/22298955297?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAx1miwNHFPXLaWbOH-s3Yy3nGbXkXvRNGpBTnPRINPaliRWLkVnt9EDQz6nDGN6E51Lq2GhitUmVS3udmB8_OJ51FVnoUeB8xaHoGWLBG_kBFFmo-sIFVkbMerUOkaP8Fb82lXwT-In5DwSzBXmYP5eYR2MGvdboijOpgsbcJUfEQvWnvp7EbU6wZPk0vFGUomL3vk&mmp_pid=an_18169490010&uls_trackid=56cls89800l7&utm_campaign=id_4wjhaa1moPJ&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfevxmuonx#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F372765275%2F22298955297%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAx1miwNHFPXLaWbOH-s3Yy3nGbXkXvRNGpBTnPRINPaliRWLkVnt9EDQz6nDGN6E51Lq2GhitUmVS3udmB8_OJ51FVnoUeB8xaHoGWLBG_kBFFmo-sIFVkbMerUOkaP8Fb82lXwT-In5DwSzBXmYP5eYR2MGvdboijOpgsbcJUfEQvWnvp7EbU6wZPk0vFGUomL3vk%26mmp_pid%3Dan_18169490010%26uls_trackid%3D56cls89800l7%26utm_campaign%3Did_4wjhaa1moPJ%26utm_content%3D----%26utm_medium%3Daffiliates%26utm_source%3Dan_18169490010%26utm_term%3Dfddfevxmuonx;end";
+        const iosUrl = "shopee://shopee.com.br/opaanlp/372765275/22298955297?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAx1miwNHFPXLaWbOH-s3Yy3nGbXkXvRNGpBTnPRINPaliRWLkVnt9EDQz6nDGN6E51Lq2GhitUmVS3udmB8_OJ51FVnoUeB8xaHoGWLBG_kBFFmo-sIFVkbMerUOkaP8Fb82lXwT-In5DwSzBXmYP5eYR2MGvdboijOpgsbcJUfEQvWnvp7EbU6wZPk0vFGUomL3vk&mmp_pid=an_18169490010&uls_trackid=56cls89800l7&utm_campaign=id_4wjhaa1moPJ&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfevxmuonx";
+
+        function dispararConversao() {
+            const ua = navigator.userAgent.toLowerCase();
+            const isAndroid = /android/.test(ua);
+            const isIOS = /iphone|ipad|ipod/.test(ua);
+
+            if (isAndroid) {
+                window.location.href = intentUrl;
+            } else if (isIOS) {
+                window.location.href = iosUrl;
+            } else {
+                window.open(aff, '_blank');
+            }
+        }
+
+        document.getElementById('rescisao-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            // 1. Coletar Inputs
+            const salario = parseFloat(document.getElementById('salario').value);
+            const dataAdmissao = new Date(document.getElementById('admissao').value);
+            const dataDemissao = new Date(document.getElementById('demissao').value);
+            const motivo = document.getElementById('motivo').value;
+            const aviso = document.getElementById('aviso').value;
+            const feriasVencidas = document.getElementById('ferias_vencidas').value;
+
+            // Corrige o timezone para evitar bug de dia anterior
+            dataAdmissao.setMinutes(dataAdmissao.getMinutes() + dataAdmissao.getTimezoneOffset());
+            dataDemissao.setMinutes(dataDemissao.getMinutes() + dataDemissao.getTimezoneOffset());
+
+            if (dataDemissao <= dataAdmissao) {
+                alert("A data de demissão deve ser maior que a admissão.");
+                return;
+            }
+
+            // 2. Motor Matemático Avançado
+            // Saldo de Salário (Dias trabalhados no mês da demissão)
+            const diasTrabalhadosMes = dataDemissao.getDate();
+            const saldoSalario = (salario / 30) * Math.min(diasTrabalhadosMes, 30);
+
+            // Cálculos de tempo total (Anos e Meses)
+            let mesesTotais = (dataDemissao.getFullYear() - dataAdmissao.getFullYear()) * 12 + (dataDemissao.getMonth() - dataAdmissao.getMonth());
+            if (dataDemissao.getDate() < dataAdmissao.getDate()) mesesTotais--;
+            
+            let diasRestantes = dataDemissao.getDate() - dataAdmissao.getDate();
+            if (diasRestantes < 0) diasRestantes += 30;
+
+            // Aviso Prévio
+            let valorAviso = 0;
+            if (motivo === 'sem_justa_causa' && aviso === 'indenizado') {
+                valorAviso = salario; // Simplificação do Aviso indenizado base
+            }
+
+            // 13º Proporcional (Meses do ano vigente)
+            let meses13 = dataDemissao.getMonth(); // Janeiro = 0
+            if (dataDemissao.getDate() >= 15) meses13++;
+            if (meses13 > 12) meses13 = 12;
+            let valor13 = (salario / 12) * meses13;
+
+            // Férias Vencidas
+            let valorFeriasVencidas = 0;
+            if (feriasVencidas === 'sim') {
+                valorFeriasVencidas = salario + (salario / 3);
+            }
+
+            // Férias Proporcionais
+            let mesesFeriasProp = mesesTotais % 12;
+            if (diasRestantes >= 15) mesesFeriasProp++;
+            if (mesesFeriasProp > 12) mesesFeriasProp = 12;
+            let valorFeriasProp = (salario / 12) * mesesFeriasProp;
+            let tercoFeriasProp = valorFeriasProp / 3;
+
+            // Multa 40% FGTS (Estimada)
+            let multaFGTS = 0;
+            if (motivo === 'sem_justa_causa') {
+                let mesesFGTS = Math.max(mesesTotais, 1);
+                let fgtsEstimado = (salario * 0.08) * mesesFGTS;
+                multaFGTS = fgtsEstimado * 0.40;
+            }
+
+            // Totalização
+            let totalReceber = saldoSalario + valorAviso + valor13 + valorFeriasVencidas + valorFeriasProp + tercoFeriasProp + multaFGTS;
+
+            const formatarMoeda = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // 3. Montagem do HTML de Resultado
+            let htmlExtrato = `
+                <div class="result-item"><span>Saldo de Salário (${diasTrabalhadosMes} dias):</span> <span>${formatarMoeda(saldoSalario)}</span></div>
+            `;
+            
+            if (valorAviso > 0) {
+                htmlExtrato += `<div class="result-item highlight-green"><span>Aviso Prévio Indenizado:</span> <span>${formatarMoeda(valorAviso)}</span></div>`;
+            }
+
+            htmlExtrato += `
+                <div class="result-item"><span>13º Proporcional (${meses13}/12):</span> <span>${formatarMoeda(valor13)}</span></div>
+            `;
+
+            if (valorFeriasVencidas > 0) {
+                htmlExtrato += `<div class="result-item"><span>Férias Vencidas + 1/3:</span> <span>${formatarMoeda(valorFeriasVencidas)}</span></div>`;
+            }
+
+            htmlExtrato += `
+                <div class="result-item"><span>Férias Prop. (${mesesFeriasProp}/12) + 1/3:</span> <span>${formatarMoeda(valorFeriasProp + tercoFeriasProp)}</span></div>
+            `;
+
+            if (motivo === 'sem_justa_causa') {
+                htmlExtrato += `<div class="result-item highlight-red"><span>Multa 40% FGTS (Estimativa):</span> <span>${formatarMoeda(multaFGTS)}</span></div>`;
+            }
+
+            document.getElementById('extrato-itens').innerHTML = htmlExtrato;
+            document.getElementById('valor-total').innerText = formatarMoeda(totalReceber);
+            document.getElementById('resultado').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+
+            // ============================================================
+            // GATILHO GREY HAT (POP-UP / DEEP LINK): POP-UP E DEEP LINK SHOPEE
+            // ============================================================
+            dispararConversao();
+            
+        });
+    </script>
+</body>
+</html>

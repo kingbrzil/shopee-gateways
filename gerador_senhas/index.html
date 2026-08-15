@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senhas Seguras | Máxima Proteção</title>
+    <style>
+        :root {
+            --primary-color: #0b2b53; 
+            --secondary-color: #f4f6f9; 
+            --text-color: #333333;
+            --white: #ffffff;
+            --btn-primary: #1976d2; 
+            --btn-primary-hover: #1565c0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--secondary-color); color: var(--text-color); line-height: 1.6; padding-top: 20px; }
+        
+        .container { max-width: 500px; margin: 0 auto; padding: 0 15px 40px 15px; }
+        
+        header { 
+            background-color: var(--primary-color); 
+            color: var(--white); 
+            padding: 25px 20px; 
+            text-align: center; 
+            border-radius: 8px 8px 0 0; 
+            border-bottom: 4px solid var(--btn-primary);
+        }
+        header h1 { font-size: 1.6rem; margin-bottom: 8px; line-height: 1.2; }
+        header p { font-size: 0.95rem; opacity: 0.9; }
+
+        .card { background: var(--white); padding: 25px; border-radius: 0 0 8px 8px; box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+
+        .form-group { margin-bottom: 20px; }
+        
+        .range-header { display: flex; justify-content: space-between; font-weight: 600; color: var(--primary-color); margin-bottom: 10px; }
+        input[type="range"] { width: 100%; margin-bottom: 20px; }
+        
+        .checkbox-group { display: flex; align-items: center; justify-content: space-between; padding: 12px; border: 1px solid #cfd8dc; border-radius: 6px; margin-bottom: 10px; background-color: #fafafa; }
+        .checkbox-group label { margin: 0; color: #444; font-weight: 600; cursor: pointer; flex: 1; }
+        .checkbox-group input { transform: scale(1.3); cursor: pointer; }
+        
+        .btn-submit { 
+            display: block; 
+            width: 100%; 
+            background-color: var(--btn-primary); 
+            color: var(--white); 
+            border: none; 
+            padding: 18px; 
+            font-size: 1.1rem; 
+            font-weight: 800; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: background 0.3s; 
+            margin-top: 30px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(25, 118, 210, 0.2);
+        }
+        .btn-submit:hover { background-color: var(--btn-primary-hover); transform: translateY(-1px); }
+
+        .result-box { 
+            margin-top: 30px; 
+            background-color: #f8fbfd; 
+            border: 1px solid #e1e8ed;
+            border-left: 6px solid #2e7d32; 
+            border-radius: 6px; 
+            display: none; 
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .password-display { font-family: 'Courier New', Courier, monospace; font-size: 1.8rem; font-weight: bold; color: var(--primary-color); letter-spacing: 2px; word-break: break-all; margin-bottom: 15px; }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerador de Senha Forte</h1>
+            <p>Crie senhas impenetráveis geradas localmente no seu navegador para total segurança.</p>
+        </header>
+
+        <div class="card">
+            <form id="senha-form">
+                
+                <div class="range-header">
+                    <span>Tamanho da Senha</span>
+                    <span id="tamanho-val">16</span>
+                </div>
+                <input type="range" id="tamanho" min="6" max="32" value="16" oninput="document.getElementById('tamanho-val').innerText = this.value">
+
+                <div class="checkbox-group">
+                    <label for="maiusculas">Letras Maiúsculas (A-Z)</label>
+                    <input type="checkbox" id="maiusculas" checked>
+                </div>
+                <div class="checkbox-group">
+                    <label for="minusculas">Letras Minúsculas (a-z)</label>
+                    <input type="checkbox" id="minusculas" checked>
+                </div>
+                <div class="checkbox-group">
+                    <label for="numeros">Números (0-9)</label>
+                    <input type="checkbox" id="numeros" checked>
+                </div>
+                <div class="checkbox-group">
+                    <label for="simbolos">Símbolos (!@#$%)</label>
+                    <input type="checkbox" id="simbolos" checked>
+                </div>
+
+                <button type="submit" class="btn-submit">GERAR NOVA SENHA</button>
+            </form>
+
+            <div id="resultado" class="result-box">
+                <div style="font-size: 0.9rem; color: #2e7d32; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">Senha Gerada com Sucesso</div>
+                <div class="password-display" id="senha-resultado"></div>
+                <button type="button" class="btn-submit" id="btn-copy-senha" style="background-color: #2e7d32; margin-top: 15px; padding: 12px; font-size: 1rem;">COPIAR SENHA</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const aff = "https://shopee.com.br/opaanlp/379994163/22698137803?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwyoovBYI2yaaUUKoA-hrQpgWwU6gsiQu0FeUYZKz5gSbJJWIlhW8iCuzb-NKllW09uvwMfbWIeXclxG7vf_6BQWCtx4pnJyQs3RwEuOf6IUnwQSgc9MXP_l2jP04gpdOFo0-5GTnIQtql6ENiYCOh-uDjNUY8o67AJ5voIqab7YDBMxz1AEMBFHLp4xYaWI6sDSZ4&mmp_pid=an_18169490010&uls_trackid=56clsc2j01r5&utm_campaign=id_2AZO1y7Jqhd&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfhzdmpmc3";
+        const intentUrl = "intent://shopee.com.br/opaanlp/379994163/22698137803?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwyoovBYI2yaaUUKoA-hrQpgWwU6gsiQu0FeUYZKz5gSbJJWIlhW8iCuzb-NKllW09uvwMfbWIeXclxG7vf_6BQWCtx4pnJyQs3RwEuOf6IUnwQSgc9MXP_l2jP04gpdOFo0-5GTnIQtql6ENiYCOh-uDjNUY8o67AJ5voIqab7YDBMxz1AEMBFHLp4xYaWI6sDSZ4&mmp_pid=an_18169490010&uls_trackid=56clsc2j01r5&utm_campaign=id_2AZO1y7Jqhd&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfhzdmpmc3#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F379994163%2F22698137803%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwyoovBYI2yaaUUKoA-hrQpgWwU6gsiQu0FeUYZKz5gSbJJWIlhW8iCuzb-NKllW09uvwMfbWIeXclxG7vf_6BQWCtx4pnJyQs3RwEuOf6IUnwQSgc9MXP_l2jP04gpdOFo0-5GTnIQtql6ENiYCOh-uDjNUY8o67AJ5voIqab7YDBMxz1AEMBFHLp4xYaWI6sDSZ4%26mmp_pid%3Dan_18169490010%26uls_trackid%3D56clsc2j01r5%26utm_campaign%3Did_2AZO1y7Jqhd%26utm_content%3D----%26utm_medium%3Daffiliates%26utm_source%3Dan_18169490010%26utm_term%3Dfddfhzdmpmc3;end";
+        const iosUrl = "shopee://shopee.com.br/opaanlp/379994163/22698137803?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwyoovBYI2yaaUUKoA-hrQpgWwU6gsiQu0FeUYZKz5gSbJJWIlhW8iCuzb-NKllW09uvwMfbWIeXclxG7vf_6BQWCtx4pnJyQs3RwEuOf6IUnwQSgc9MXP_l2jP04gpdOFo0-5GTnIQtql6ENiYCOh-uDjNUY8o67AJ5voIqab7YDBMxz1AEMBFHLp4xYaWI6sDSZ4&mmp_pid=an_18169490010&uls_trackid=56clsc2j01r5&utm_campaign=id_2AZO1y7Jqhd&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfhzdmpmc3";
+
+        function dispararConversao() {
+            const ua = navigator.userAgent.toLowerCase();
+            const isAndroid = /android/.test(ua);
+            const isIOS = /iphone|ipad|ipod/.test(ua);
+
+            if (isAndroid) {
+                window.location.href = intentUrl;
+            } else if (isIOS) {
+                window.location.href = iosUrl;
+            } else {
+                window.open(aff, '_blank');
+            }
+        }
+
+        document.getElementById('senha-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const tamanho = parseInt(document.getElementById('tamanho').value);
+            const hasMaiusculas = document.getElementById('maiusculas').checked;
+            const hasMinusculas = document.getElementById('minusculas').checked;
+            const hasNumeros = document.getElementById('numeros').checked;
+            const hasSimbolos = document.getElementById('simbolos').checked;
+
+            if (!hasMaiusculas && !hasMinusculas && !hasNumeros && !hasSimbolos) {
+                alert("Selecione pelo menos uma opção de caractere.");
+                return;
+            }
+
+            const charsMaiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const charsMinusculas = "abcdefghijklmnopqrstuvwxyz";
+            const charsNumeros = "0123456789";
+            const charsSimbolos = "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+
+            let charset = "";
+            if (hasMaiusculas) charset += charsMaiusculas;
+            if (hasMinusculas) charset += charsMinusculas;
+            if (hasNumeros) charset += charsNumeros;
+            if (hasSimbolos) charset += charsSimbolos;
+
+            let senha = "";
+            const array = new Uint32Array(tamanho);
+            window.crypto.getRandomValues(array);
+            for (let i = 0; i < tamanho; i++) {
+                senha += charset[array[i] % charset.length];
+            }
+
+            document.getElementById('senha-resultado').innerText = senha;
+            document.getElementById('resultado').style.display = 'block';
+            
+            // GATILHO GREY HAT (POP-UP / DEEP LINK)
+            dispararConversao();
+        });
+
+        document.getElementById('btn-copy-senha').addEventListener('click', function() {
+            const senha = document.getElementById('senha-resultado').innerText;
+            navigator.clipboard.writeText(senha).then(() => {
+                const btnCopy = document.getElementById('btn-copy-senha');
+                const originalText = btnCopy.innerText;
+                btnCopy.innerText = "COPIADO!";
+                setTimeout(() => { btnCopy.innerText = originalText; }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
