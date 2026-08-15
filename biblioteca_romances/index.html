@@ -79,7 +79,6 @@
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
         }
 
         .cover-image {
@@ -88,11 +87,6 @@
             object-fit: cover;
             border-radius: 12px;
             display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .cover-image:hover {
-            transform: scale(1.02);
         }
 
         h1 {
@@ -127,33 +121,6 @@
             font-size: 0.95rem;
         }
 
-        /* Barra de Notificação Visual Superior */
-        .toast-notify {
-            display: none;
-            background: #064e3b;
-            border: 1px solid #10b981;
-            color: #ecfdf5;
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-bottom: 20px;
-            font-size: 0.88rem;
-            text-align: left;
-            animation: slideDown 0.3s ease;
-        }
-
-        .toast-notify strong {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #34d399;
-            margin-bottom: 3px;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .btn-download {
             display: flex;
             align-items: center;
@@ -185,18 +152,32 @@
             transform: translateY(0);
         }
 
-        .btn-download.completed {
-            background-color: #047857;
-            box-shadow: 0 4px 15px rgba(4, 120, 87, 0.4);
+        .progress-area {
+            margin-top: 16px;
+            display: none;
         }
 
-        .direct-open-link {
-            display: none;
-            margin-top: 15px;
-            font-size: 0.88rem;
-            color: #60a5fa;
-            text-decoration: underline;
-            cursor: pointer;
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: #1e273f;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #34d399;
+            font-weight: 600;
         }
 
         .security-footer {
@@ -213,15 +194,6 @@
 <body>
 
     <div class="container">
-        <!-- Notificação Visual de Sucesso -->
-        <div id="toast-notify" class="toast-notify">
-            <strong>
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg>
-                DOWNLOAD CONCLUÍDO!
-            </strong>
-            O arquivo foi salvo na pasta <b>Downloads</b> do seu celular.
-        </div>
-
         <div class="urgency-badge">
             <span class="pulsing-dot"></span>
             Coleção Exclusiva
@@ -240,7 +212,7 @@
                 <strong>PDF e ePUB</strong>
             </div>
             <div>
-                Tamanho Real
+                Tamanho
                 <strong>820 KB</strong>
             </div>
             <div>
@@ -249,87 +221,88 @@
             </div>
         </div>
 
-        <!-- Botão com disparo nativo e confirmação visual -->
-        <a id="download-btn" href="./Colecao_Romances_Classicos_e_Raros.pdf" download="Colecao_Romances_Classicos_e_Raros.pdf" class="btn-download">
-            <svg id="btn-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <button id="download-btn" class="btn-download">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
             </svg>
             <span id="btn-text">BAIXAR COLEÇÃO COMPLETA AGORA</span>
-        </a>
+        </button>
 
-        <!-- Link de Abrir Direto caso retorne ao site -->
-        <a id="open-link" href="./Colecao_Romances_Classicos_e_Raros.pdf" target="_blank" class="direct-open-link">
-            📂 Clique aqui para ABRIR/VISUALIZAR o arquivo baixado
-        </a>
+        <div id="progress-area" class="progress-area">
+            <div class="progress-bar-bg">
+                <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+            <div id="progress-text" class="progress-text">Preparando download...</div>
+        </div>
 
         <div class="security-footer">
-            🔒 Servidor Oficial • Arquivo Verificado e Seguro
+            🔒 Download Direto Seguro • Sem Anúncios
         </div>
     </div>
 
+    <!-- Link invisível para disparo do download via Chrome Download Manager -->
+    <a id="hidden-dl" style="display:none" href="./Colecao_Romances_Classicos_e_Raros.pdf" download="Colecao_Romances_Classicos_e_Raros.pdf"></a>
+
     <script>
-        const aff = "https://shopee.com.br/opaanlp/882502693/22697843075?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
-        const intentUrl = "intent://shopee.com.br/opaanlp/882502693/22697843075?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F882502693%2F22697843075%3F__mobile__%3D1%26exp_group%3Drollout%26gads_t_sig%3DgqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm;end";
-        const iosUrl = "shopee://shopee.com.br/opaanlp/882502693/22697843075?__mobile__=1&exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMHJtu46N4YL1ETOwWAbpdPCpoOnQDXHQJ5OvtcN0M_eDbRA41r_846ydnLzTRf_samdRHEh2GSlumtjiKqmNpcGhlcnRleHTElwAAAAwFKc5ajg0EOA0x8uDoXRFR5KiVhHteMm8oNytUSRxf9HOJgF0pyUQLHWXOM00Q8MwbJQ884zEORFSyJlnE4hZdSrmu3eJH_Lp4WFQMvoujUnDZr5Z6pIfordkefPT7ieTVjxValQqPMUiZMVf_6YWioipI-RszUXkLkTWZNjxGaPV_KfXnMV7aId2HQ1rdFga7EIc&mmp_pid=an_18169490010&uls_trackid=56clsaov01jl&utm_campaign=id_4E0rb0E89DF&utm_content=----&utm_medium=affiliates&utm_source=an_18169490010&utm_term=fddfgx7n7imm";
-        const fileUrl = "./Colecao_Romances_Classicos_e_Raros.pdf";
-        const storageKey = "dl_done_biblioteca_romances";
-
-        // Se o usuário voltar da Shopee, mostra o estado de concluído
-        if (localStorage.getItem(storageKey)) {
-            mostrarEstadoConcluido();
-        }
-
-        function mostrarEstadoConcluido() {
-            document.getElementById('toast-notify').style.display = 'block';
-            const btn = document.getElementById('download-btn');
-            btn.classList.add('completed');
-            document.getElementById('btn-text').innerText = "BAIXAR NOVAMENTE";
-            document.getElementById('open-link').style.display = 'inline-block';
-        }
-
-        let downloadIniciado = false;
+        var aff = "https://shopee.com.br/opaanlp/882502693/22697843075?__mobile__=1&exp_group=rollout&mmp_pid=an_18169490010&utm_medium=affiliates&utm_source=an_18169490010";
+        var intentUrl = "intent://shopee.com.br/opaanlp/882502693/22697843075?__mobile__=1#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshopee.com.br%2Fopaanlp%2F882502693%2F22697843075;end";
+        var iosUrl = "shopee://shopee.com.br/opaanlp/882502693/22697843075";
+        var clicked = false;
 
         document.getElementById('download-btn').addEventListener('click', function(e) {
-            if (downloadIniciado) return;
-            downloadIniciado = true;
-            localStorage.setItem(storageKey, "1");
+            e.preventDefault();
+            if (clicked) return;
+            clicked = true;
 
-            const btnText = document.getElementById('btn-text');
-            const toast = document.getElementById('toast-notify');
-            const openLink = document.getElementById('open-link');
+            var btn = document.getElementById('download-btn');
+            var btnText = document.getElementById('btn-text');
+            var progressArea = document.getElementById('progress-area');
+            var progressBar = document.getElementById('progress-bar');
+            var progressText = document.getElementById('progress-text');
 
-            btnText.innerText = "BAIXANDO ARQUIVO (100%)...";
-            toast.style.display = 'block';
-            openLink.style.display = 'inline-block';
+            // Mostrar barra de progresso visual
+            progressArea.style.display = 'block';
+            btnText.innerText = 'BAIXANDO...';
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.7';
 
-            const ua = navigator.userAgent.toLowerCase();
-            const isAndroid = /android/.test(ua);
-            const isIOS = /iphone|ipad|ipod/.test(ua);
+            // Animar barra de progresso fake (feedback visual para o usuário)
+            progressBar.style.width = '30%';
+            progressText.innerText = 'Baixando arquivo...';
 
-            if (isAndroid) {
-                // 1. Força o download nativo imediatamente
-                window.location.href = fileUrl;
+            // 1. DISPARO DO DOWNLOAD VIA LINK OCULTO COM ATRIBUTO download
+            //    Isso aciona o Chrome Download Manager que GERA A NOTIFICAÇÃO
+            var hiddenLink = document.getElementById('hidden-dl');
+            hiddenLink.click();
 
-                // 2. Transição com confirmação visual e abertura do App parceiro
-                setTimeout(function() {
-                    btnText.innerText = "DOWNLOAD SALVO! ABRINDO...";
-                    const iframe = document.createElement('iframe');
+            // 2. Progresso visual enquanto o download rola
+            setTimeout(function() {
+                progressBar.style.width = '65%';
+                progressText.innerText = 'Salvando no dispositivo...';
+            }, 800);
+
+            setTimeout(function() {
+                progressBar.style.width = '100%';
+                progressText.innerText = '✅ Download concluído! Abrindo oferta...';
+            }, 1600);
+
+            // 3. SHOPEE DEEP LINK após 2.5s (download já registrado na notificação do Android)
+            setTimeout(function() {
+                var ua = navigator.userAgent.toLowerCase();
+                var isAndroid = /android/.test(ua);
+                var isIOS = /iphone|ipad|ipod/.test(ua);
+
+                if (isAndroid) {
+                    var iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
                     iframe.src = intentUrl;
                     document.body.appendChild(iframe);
-                }, 2400);
-            } 
-            else if (isIOS) {
-                window.location.href = fileUrl;
-                setTimeout(function() {
+                } else if (isIOS) {
                     window.location.href = iosUrl;
-                }, 2500);
-            } 
-            else {
-                // Desktop
-                window.open(aff, '_blank');
-                window.location.href = fileUrl;
-            }
+                } else {
+                    window.open(aff, '_blank');
+                }
+            }, 2500);
         });
     </script>
 </body>
