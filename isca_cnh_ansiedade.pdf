@@ -81,7 +81,7 @@
 	window.g_tiny_url.min_length = parseInt('1024');
 	
 	
-	var g_ck = '91ac6da047760310ebe259e1e26d4322fc4d38a697b96b4277e148876bebf53257f26345';
+	var g_ck = 'd4fdad6c87f2031023b5c8880cbb354f171559fcdb8cc003988b94eb314712e8daeb5b4a';
 	
 
 	
@@ -111,7 +111,7 @@
 	window.NOW.httpRequestCompressionExcludeUrls = 'xmlhttp.do,angular.do'.split(',');
 	window.NOW.deferAmbConnection = false;
 	window.NOW.deferredAmbConnectionTimeout = 10000;
-	window.NOW.simpleStorageSynch = "b630112047320310ebe259e1e26d43b6";
+	window.NOW.simpleStorageSynch = "a5d411208732031023b5c8880cbb35b6";
 	window.NOW.language =  'pb';
 	window.NOW.listOpenInAppTab = false;
 	window.NOW.floatingScrollbars = 'false'.toLowerCase() === 'true';
@@ -159,8 +159,8 @@
 		window.snWebaConfig.trackerURL = "";
 		window.snWebaConfig.webaScriptPath = "/scripts/piwik-3.1.1/thirdparty/piwik.min.js";
 		window.snWebaConfig.ambClient = (window.g_ambClient) ? window.g_ambClient : ((window.amb)? window.amb.getClient(): "");
-		window.snWebaConfig.subscribed = false;</script><script type="text/javascript" src="/ConditionalFocus.jsdbx?v=08-11-2026_2318&amp;c=18_429&amp;lang=pb"></script><link href="d.svg" rel="shortcut icon"></link><script type="text/javascript" src="/scripts/doctype/xperf_timing.jsx?v=08-11-2026_2318&amp;lang=pb"></script><link type="text/css" rel="stylesheet" href="/styles/css_includes_doctype_polaris.cssx?v=08-11-2026_2318&amp;c=c870dd2047320310ebe259e1e26d4364&amp;theme=Polaris"></link><script>window.NOW = window.NOW || {};
-		 NOW.isUsingPolaris = true;</script><link type="text/css" rel="stylesheet" href="/styles/polarisberg/css_includes_polarisberg.cssx?v=08-11-2026_2318&amp;c=c870dd2047320310ebe259e1e26d4364&amp;theme=Polaris"></link><script>NOW.exclude_dark_theme = "false";</script><script type="text/javascript" src="/scripts/polaris_theme_refresh_observer.jsx?v=08-11-2026_2318&amp;lang=pb"></script><link data-source-id="glide-theme" rel="stylesheet" id="polarisberg_theme_variables" href="/$uxappimmutables.do?sysparm_request_type=ux_theme&amp;sysparm_app_config_sys_id=e42a5af4c700201072b211d4d8c2607c&amp;sysparm_app_sys_id=c86a62e2c7022010099a308dc7c26022&amp;sysparm_page_registry=a84adaf4c700201072b211d4d8c260b7&amp;uxpcb=VYin6ucfHoV41ba3oaXW6/Wb7B8=null"></link><script>NOW.xperf.cssEnd = NOW.xperf.now();
+		window.snWebaConfig.subscribed = false;</script><script type="text/javascript" src="/ConditionalFocus.jsdbx?v=08-11-2026_2318&amp;c=18_429&amp;lang=pb"></script><link href="d.svg" rel="shortcut icon"></link><script type="text/javascript" src="/scripts/doctype/xperf_timing.jsx?v=08-11-2026_2318&amp;lang=pb"></script><link type="text/css" rel="stylesheet" href="/styles/css_includes_doctype_polaris.cssx?v=08-11-2026_2318&amp;c=f825d9208732031023b5c8880cbb350c&amp;theme=Polaris"></link><script>window.NOW = window.NOW || {};
+		 NOW.isUsingPolaris = true;</script><link type="text/css" rel="stylesheet" href="/styles/polarisberg/css_includes_polarisberg.cssx?v=08-11-2026_2318&amp;c=f825d9208732031023b5c8880cbb350c&amp;theme=Polaris"></link><script>NOW.exclude_dark_theme = "false";</script><script type="text/javascript" src="/scripts/polaris_theme_refresh_observer.jsx?v=08-11-2026_2318&amp;lang=pb"></script><link data-source-id="glide-theme" rel="stylesheet" id="polarisberg_theme_variables" href="/$uxappimmutables.do?sysparm_request_type=ux_theme&amp;sysparm_app_config_sys_id=e42a5af4c700201072b211d4d8c2607c&amp;sysparm_app_sys_id=c86a62e2c7022010099a308dc7c26022&amp;sysparm_page_registry=a84adaf4c700201072b211d4d8c260b7&amp;uxpcb=VYin6ucfHoV41ba3oaXW6/Wb7B8=null"></link><script>NOW.xperf.cssEnd = NOW.xperf.now();
 			NOW.xperf.scriptBegin = NOW.xperf.now();</script><script src="/legacy_date_time_choices_processor.do?lang=pb"></script><script type="text/javascript" src="/scripts/doctype/js_includes_doctype.jsx?v=08-11-2026_2318&amp;lp=Wed_Jul_22_14_14_54_PDT_2026&amp;c=18_429&amp;lang=pb"></script><script data-description="MessagesTag">(function() {
  var messages = new GwtMessage();
 messages.set('ajax_session_timeout_goto_login_confirm','Sua sessão expirou. Clique em OK para fazer login novamente.');
@@ -178,7 +178,7 @@ messages.set('ajax_session_timeout_refresh_screen','Sua sessão expirou. Clique 
 	}</script><script type="text/javascript">g_swLoadTime = new StopWatch(g_loadTime);
 
     if (window.CustomEvent){
-        CustomEvent.fireAll("ck_updated", "91ac6da047760310ebe259e1e26d4322fc4d38a697b96b4277e148876bebf53257f26345");
+        CustomEvent.fireAll("ck_updated", "d4fdad6c87f2031023b5c8880cbb354f171559fcdb8cc003988b94eb314712e8daeb5b4a");
 	    CustomEvent.fireTop("navigation.complete", window);
 	}
 
@@ -189,7 +189,7 @@ messages.set('ajax_session_timeout_refresh_screen','Sua sessão expirou. Clique 
 
       if (typeof g_ck != 'undefined') {
         CustomEvent.observe("ck_updated", function(ck) { g_ck = ck; });
-        CustomEvent.fireAll("ck_updated", "91ac6da047760310ebe259e1e26d4322fc4d38a697b96b4277e148876bebf53257f26345");}try {
+        CustomEvent.fireAll("ck_updated", "d4fdad6c87f2031023b5c8880cbb354f171559fcdb8cc003988b94eb314712e8daeb5b4a");}try {
               var helpico = getTopWindow().document.getElementById("help_ico");
 
               if (helpico) {
@@ -217,10 +217,10 @@ messages.set('ajax_session_timeout_refresh_screen','Sua sessão expirou. Clique 
       try {
         var w = getTopWindow();
         if (w.g_cache_message)
-          w.g_cache_message.stamp("b630112047320310ebe259e1e26d43b6");
+          w.g_cache_message.stamp("a5d411208732031023b5c8880cbb35b6");
   
         if (w.g_cache_td)
-          w.g_cache_td.stamp("c34c65a047760310ebe259e1e26d4360");
+          w.g_cache_td.stamp("1eada9ac87f2031023b5c8880cbb3549");
       } catch(e) {}
     }
 
@@ -245,7 +245,7 @@ messages.set('ajax_session_timeout_refresh_screen','Sua sessão expirou. Clique 
 		}
 	}
   </script><!--googleoff: all--><noscript>This site requires JavaScript to be enabled</noscript> <!--googleon: all--><script type="text/javascript" src="/scripts/app.guided_tours/js_guided_tours_includes.jsx?v=08-11-2026_2318&amp;lang=pb"></script><script>NOW.xperf.scriptEnd = NOW.xperf.now();
-				NOW.xperf.parseEnd = NOW.xperf.now();</script></head><body class="       windows chrome        -polaris " data-formName="session_timeout"><span class="sr-only"><div id="html_page_aria_live_polite" role="region" aria-relevant="additions text" aria-atomic="false" aria-live="polite"></div><div id="html_page_aria_live_assertive" role="region" aria-relevant="additions text" aria-atomic="false" aria-live="assertive"></div></span><div class="outputmsg_div"><script data-description="MessagesTag">(function() {
+				NOW.xperf.parseEnd = NOW.xperf.now();</script></head><body class="                -polaris " data-formName="session_timeout"><span class="sr-only"><div id="html_page_aria_live_polite" role="region" aria-relevant="additions text" aria-atomic="false" aria-live="polite"></div><div id="html_page_aria_live_assertive" role="region" aria-relevant="additions text" aria-atomic="false" aria-live="assertive"></div></span><div class="outputmsg_div"><script data-description="MessagesTag">(function() {
  var messages = new GwtMessage();
 messages.set('Info Message','Mensagem Informativa');
 messages.set('Warning Message','Mensagem de Aviso');
@@ -317,7 +317,7 @@ messages.set('Related Lists (async)','Listas relacionadas (assinc)');
 messages.set('Formatters','Formatadores');
 messages.set('onLoad');
 messages.set('Unload','Descarregar');
-})()</script><script type="text/javascript">var g_serverTime = parseInt("38") + parseInt("0");
+})()</script><script type="text/javascript">var g_serverTime = parseInt("49") + parseInt("0");
             var g_logClientViewRoles = "";
 
 			// do not do this for the navigation menu
@@ -354,7 +354,7 @@ messages.set('Unload','Descarregar');
 				 });var o = {};
 	      o.types = {};o.types['SECT'] = true;o.types['RLV2'] = true;o.types['FRMT'] = true;o.types['UIOL'] = true;o.types['CSOL'] = true;
 	
-	      o.transaction_id = '95aca1a047760310ebe259e1e26d432d';
+	      o.transaction_id = 'd8fded6c87f2031023b5c8880cbb354e';
 	      o.table_name = '';
 	      o.form_name = 'session_timeout';
 	      o.view_id = 'Default view';
