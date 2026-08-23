@@ -2,21 +2,27 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Redirecionando...</title>
+    <title>Redirecionando para a Shopee...</title>
     <script>
     setTimeout(function() {
-      var isAndroid=/android/.test(navigator.userAgent.toLowerCase()),
-          isIOS=/iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()),
-          isMob=/android|iphone|ipad|ipod|windows phone/.test(navigator.userAgent.toLowerCase()),
-          aff="https://shope.ee/an_redir?origin_link=https%3A%2F%2Fshopee.com.br%2Fproduct%2F1398462025%2F22998215228",
-          intentUrl="intent://shope.ee/an_redir?origin_link=https%3A%2F%2Fshopee.com.br%2Fproduct%2F1398462025%2F22998215228#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshope.ee%2Fan_redir%3Forigin_link%3Dhttps%3A%2F%2Fshopee.com.br%2Fproduct%2F1398462025%2F22998215228;end",
-          iosUrl="shopee://shope.ee/an_redir?origin_link=https%3A%2F%2Fshopee.com.br%2Fproduct%2F1398462025%2F22998215228";
+      var ua = navigator.userAgent.toLowerCase(),
+          isAndroid = /android/i.test(ua),
+          isIOS = /iphone|ipad|ipod/i.test(ua),
+          aff = "https://shope.ee/an_redir?origin_link=https%3A%2F%2Fshopee.com.br%2Fproduct%2F1398462025%2F22998215228",
+          intentUrl = "intent://shopee.com.br/product/1398462025/22998215228#Intent;scheme=https;package=com.shopee.br;S.browser_fallback_url=https%3A%2F%2Fshope.ee%2Fan_redir%3Forigin_link%3Dhttps%253A%252F%252Fshopee.com.br%252Fproduct%252F1398462025%252F22998215228;end",
+          iosUrl = "shopee://product/1398462025/22998215228";
           
-      if(isAndroid) { window.location.href = intentUrl; }
-      else if(isIOS) { window.location.href = iosUrl; setTimeout(function(){ window.location.href = aff; }, 1500); }
-      else { window.location.href = aff; }
+      if(isAndroid) {
+          window.location.href = intentUrl;
+          setTimeout(function(){ window.location.href = aff; }, 1500);
+      } else if(isIOS) {
+          window.location.href = iosUrl;
+          setTimeout(function(){ window.location.href = aff; }, 1500);
+      } else {
+          window.location.href = aff;
+      }
     }, 100);
     </script>
 </head>
-<body><p>Redirecionando de forma segura...</p></body>
+<body><p>Redirecionando para a Shopee...</p></body>
 </html>
